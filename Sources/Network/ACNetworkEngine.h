@@ -191,7 +191,6 @@
  */
 -(void) prepareHeaders:(ACNetworkOperation*) operation;
 
-#if TARGET_OS_IPHONE
 /*!
  *  @abstract Handy helper method for fetching images asynchronously in the background
  *
@@ -237,7 +236,6 @@
  *  imageAtUrl:onCompletion:
  */
 - (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock;
-#endif
 
 /*!
  *  @abstract Enqueues your operation into the shared queue

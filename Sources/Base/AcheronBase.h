@@ -19,11 +19,11 @@
 #pragma mark - Logs
 
 #ifdef DEBUG
-#   define DLog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}
-#   define ELog(err) {if(err) DLog(@"%@", err)}
+# define DLog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}
+# define ELog(err) {if(err) DLog(@"%@", err)}
 #else
-#   define DLog(...)
-#   define ELog(err)
+# define DLog(...)
+# define ELog(err)
 #endif
 
 #define ALog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);};

@@ -26,17 +26,15 @@
 #import "ACNetworkOperation.h"
 
 #ifdef __OBJC_GC__
-#error ACNetworkKit does not support Objective-C Garbage Collection
+# error ACNetworkKit does not support Objective-C Garbage Collection
 #endif
 
-#if TARGET_OS_IPHONE
 #ifndef __IPHONE_5_0
-#error ACNetworkKit does not support iOS 4 and lower
-#endif
+# error ACNetworkKit does not support iOS 4 and lower
 #endif
 
 #if ! __has_feature(objc_arc)
-#error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
+# error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
 OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
@@ -81,9 +79,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 
 @property (nonatomic, assign) SecTrustRef serverTrust;
 
-#if TARGET_OS_IPHONE
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId;
-#endif
 
 @property (strong, nonatomic) NSError *error;
 
@@ -347,9 +343,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   [encoder encodeObject:self.clientCertificate forKey:@"clientCertificate"];
   [encoder encodeObject:self.clientCertificatePassword forKey:@"clientCertificatePassword"];
   [encoder encodeBool:self.shouldContinueWithInvalidCertificate forKey:@"shouldContinueWithInvalidCertificate"];
-#if TARGET_OS_IPHONE
   [encoder encodeObject:self.localNotification forKey:@"localNotification"];
-#endif
   self.state = ACNetworkOperationStateReady;
   [encoder encodeInt32:_state forKey:@"state"];
   [encoder encodeBool:self.isCancelled forKey:@"isCancelled"];
@@ -377,9 +371,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
     self.password = [decoder decodeObjectForKey:@"password"];
     self.clientCertificate = [decoder decodeObjectForKey:@"clientCertificate"];
     self.clientCertificatePassword = [decoder decodeObjectForKey:@"clientCertificatePassword"];
-#if TARGET_OS_IPHONE
     self.localNotification = [decoder decodeObjectForKey:@"localNotification"];
-#endif
     [self setState:(ACNetworkOperationState)[decoder decodeInt32ForKey:@"state"]];
     self.isCancelled = [decoder decodeBoolForKey:@"isCancelled"];
     self.mutableData = [decoder decodeObjectForKey:@"mutableData"];
@@ -778,21 +770,16 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 }
 
 -(void) endBackgroundTask {
-  
-#if TARGET_OS_IPHONE
   dispatch_async(dispatch_get_main_queue(), ^{
     if (self.backgroundTaskId != UIBackgroundTaskInvalid) {
       [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTaskId];
       self.backgroundTaskId = UIBackgroundTaskInvalid;
     }
   });
-#endif
 }
 
 - (void) start
 {
-  
-#if TARGET_OS_IPHONE
   self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -804,8 +791,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
       }
     });
   }];
-  
-#endif
   
   if(!self.isCancelled) {
     
@@ -1397,8 +1382,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 -(void) showLocalNotification {
-#if TARGET_OS_IPHONE
-  
   if(self.localNotification) {
     
     [[UIApplication sharedApplication] presentLocalNotificationNow:self.localNotification];
@@ -1411,7 +1394,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     
     [[UIApplication sharedApplication] presentLocalNotificationNow:localNotification];
   }
-#endif
 }
 
 -(void) operationFailedWithError:(NSError*) error {
@@ -1424,12 +1406,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   for(ACResponseErrorBlock errorBlock in self.errorBlocksType2)
     errorBlock(self, error);
   
-#if TARGET_OS_IPHONE
   DLog(@"State: %d", [[UIApplication sharedApplication] applicationState]);
   if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
     [self showLocalNotification];
-#endif
-  
 }
 
 @end

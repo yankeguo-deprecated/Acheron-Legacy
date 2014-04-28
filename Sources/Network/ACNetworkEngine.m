@@ -28,17 +28,15 @@
 #define kFreezableOperationExtension @"mknetworkkitfrozenoperation"
 
 #ifdef __OBJC_GC__
-#error ACNetworkKit does not support Objective-C Garbage Collection
+# error ACNetworkKit does not support Objective-C Garbage Collection
 #endif
 
-#if TARGET_OS_IPHONE
 #ifndef __IPHONE_5_0
-#error ACNetworkKit does not support iOS 4 and lower
-#endif
+# error ACNetworkKit does not support iOS 4 and lower
 #endif
 
 #if ! __has_feature(objc_arc)
-#error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
+# error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
 @interface ACNetworkEngine (/*Private Methods*/)
@@ -175,10 +173,8 @@ static NSOperationQueue *_sharedNetworkQueue;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kACNetworkEngineOperationCountChanged
                                                         object:[NSNumber numberWithInteger:(NSInteger)[_sharedNetworkQueue operationCount]]];
-#if TARGET_OS_IPHONE
     [UIApplication sharedApplication].networkActivityIndicatorVisible =
     ([_sharedNetworkQueue.operations count] > 0);
-#endif
   }
   else {
     [super observeValueForKeyPath:keyPath ofObject:object
@@ -485,8 +481,6 @@ static NSOperationQueue *_sharedNetworkQueue;
   return op;
 }
 
-#if TARGET_OS_IPHONE
-
 - (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock {
     
 #ifdef DEBUG
@@ -524,8 +518,6 @@ static NSOperationQueue *_sharedNetworkQueue;
   
   return [self imageAtURL:url size:size completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, NSError* error){}];
 }
-
-#endif
 
 - (ACNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(ACImageBlock) imageFetchedBlock
 {
