@@ -1288,7 +1288,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   return [[NSString alloc] initWithData:[self responseData] encoding:encoding];
 }
 
-#if TARGET_OS_IPHONE
 -(UIImage*) responseImage {
   
   return [UIImage imageWithData:[self responseData]];
@@ -1353,18 +1352,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     });
   });
 }
-
-#elif TARGET_OS_MAC
--(NSImage*) responseImage {
-  
-  return [[NSImage alloc] initWithData:[self responseData]];
-}
-
--(NSXMLDocument*) responseXML {
-  
-  return [[NSXMLDocument alloc] initWithData:[self responseData] options:0 error:nil];
-}
-#endif
 
 -(id) responseJSON {
   

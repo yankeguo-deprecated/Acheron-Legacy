@@ -155,16 +155,9 @@ static NSOperationQueue *_sharedNetworkQueue;
 -(void) dealloc {
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-#if TARGET_OS_IPHONE
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
-#elif TARGET_OS_MAC
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillHideNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillResignActiveNotification object:nil];
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationWillTerminateNotification object:nil];
-#endif
-  
 }
 
 +(void) dealloc {
@@ -656,7 +649,6 @@ static NSOperationQueue *_sharedNetworkQueue;
     self.cacheInvalidationParams = [NSMutableDictionary dictionaryWithContentsOfFile:cacheInvalidationPlistFilePath];
   }
   
-#if TARGET_OS_IPHONE
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache)
                                                name:UIApplicationDidReceiveMemoryWarningNotification
                                              object:nil];
@@ -666,22 +658,6 @@ static NSOperationQueue *_sharedNetworkQueue;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache)
                                                name:UIApplicationWillTerminateNotification
                                              object:nil];
-  
-#elif TARGET_OS_MAC
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache)
-                                               name:NSApplicationWillHideNotification
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache)
-                                               name:NSApplicationWillResignActiveNotification
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCache)
-                                               name:NSApplicationWillTerminateNotification
-                                             object:nil];
-  
-#endif
-  
-  
 }
 
 -(void) emptyCache {

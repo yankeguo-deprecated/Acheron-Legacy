@@ -547,13 +547,8 @@ typedef enum {
  *  @seealso
  *  addDownloadStream:
  */
-#if TARGET_OS_IPHONE
 -(UIImage*) responseImage;
 -(void) decompressedResponseImageOfSize:(CGSize) size completionHandler:(void (^)(UIImage *decompressedImage)) imageDecompressionHandler;
-#elif TARGET_OS_MAC
--(NSImage*) responseImage;
--(NSXMLDocument*) responseXML;
-#endif
 
 /*!
  *  @abstract Helper method to retrieve the contents as a NSDictionary or NSArray depending on the JSON contents
