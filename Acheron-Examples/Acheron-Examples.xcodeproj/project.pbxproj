@@ -10,20 +10,12 @@
 	<string>46</string>
 	<key>objects</key>
 	<dict>
-		<key>03504D9676D243A78C498F21</key>
+		<key>037C5CAB3F5644359451B654</key>
 		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
+			<key>fileRef</key>
+			<string>4611CEE727C34FA3B5C5A9F3</string>
 			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-Acheron-Examples.xcconfig</string>
-			<key>path</key>
-			<string>Pods/Pods-Acheron-Examples.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
+			<string>PBXBuildFile</string>
 		</dict>
 		<key>059B4144CE214220AF7C35EF</key>
 		<dict>
@@ -32,12 +24,29 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
-		<key>240D6C8DF71B4E84A33B4BF3</key>
+		<key>1856D4F3CA264FAAA972B222</key>
 		<dict>
-			<key>fileRef</key>
-			<string>4611CEE727C34FA3B5C5A9F3</string>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
 			<key>isa</key>
-			<string>PBXBuildFile</string>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Pods-Acheron-Examples-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>41A995BA26764B4583986E3D</key>
 		<dict>
@@ -119,7 +128,7 @@ fi
 			<key>sourceTree</key>
 			<string>BUILT_PRODUCTS_DIR</string>
 		</dict>
-		<key>5E1AD3081C7C4EA2B846C791</key>
+		<key>57EFA561D53149D3A5E1DC64</key>
 		<dict>
 			<key>buildActionMask</key>
 			<string>2147483647</string>
@@ -130,7 +139,7 @@ fi
 			<key>isa</key>
 			<string>PBXShellScriptBuildPhase</string>
 			<key>name</key>
-			<string>Copy Pods Resources</string>
+			<string>Check Pods Manifest.lock</string>
 			<key>outputPaths</key>
 			<array/>
 			<key>runOnlyForDeploymentPostprocessing</key>
@@ -138,7 +147,13 @@ fi
 			<key>shellPath</key>
 			<string>/bin/sh</string>
 			<key>shellScript</key>
-			<string>"${SRCROOT}/Pods/Pods-Acheron-Examples-resources.sh"
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
 </string>
 			<key>showEnvVarsInLog</key>
 			<string>0</string>
@@ -151,8 +166,7 @@ fi
 				<string>6960AC5D190EC06D001C6E50</string>
 				<string>6960AC3D190EC06D001C6E50</string>
 				<string>6960AC3C190EC06D001C6E50</string>
-				<string>03504D9676D243A78C498F21</string>
-				<string>D87826E2911F4C01A6326D2A</string>
+				<string>CBF7239E94884B0B8305517D</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -243,7 +257,7 @@ fi
 				<string>6960AC41190EC06D001C6E50</string>
 				<string>6960AC43190EC06D001C6E50</string>
 				<string>6960AC3F190EC06D001C6E50</string>
-				<string>240D6C8DF71B4E84A33B4BF3</string>
+				<string>037C5CAB3F5644359451B654</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -270,11 +284,11 @@ fi
 			<string>6960AC67190EC06D001C6E50</string>
 			<key>buildPhases</key>
 			<array>
-				<string>783BA2CD18FA4171850F298C</string>
+				<string>57EFA561D53149D3A5E1DC64</string>
 				<string>6960AC37190EC06D001C6E50</string>
 				<string>6960AC38190EC06D001C6E50</string>
 				<string>6960AC39190EC06D001C6E50</string>
-				<string>5E1AD3081C7C4EA2B846C791</string>
+				<string>1856D4F3CA264FAAA972B222</string>
 			</array>
 			<key>buildRules</key>
 			<array/>
@@ -920,13 +934,15 @@ fi
 			</array>
 			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
 		<key>6960AC68190EC06D001C6E50</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>03504D9676D243A78C498F21</string>
+			<string>CBF7239E94884B0B8305517D</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
@@ -952,7 +968,7 @@ fi
 		<key>6960AC69190EC06D001C6E50</key>
 		<dict>
 			<key>baseConfigurationReference</key>
-			<string>03504D9676D243A78C498F21</string>
+			<string>CBF7239E94884B0B8305517D</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
@@ -984,13 +1000,13 @@ fi
 			</array>
 			<key>defaultConfigurationIsVisible</key>
 			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
 			<key>isa</key>
 			<string>XCConfigurationList</string>
 		</dict>
 		<key>6960AC6B190EC06D001C6E50</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>D87826E2911F4C01A6326D2A</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -1026,8 +1042,6 @@ fi
 		</dict>
 		<key>6960AC6C190EC06D001C6E50</key>
 		<dict>
-			<key>baseConfigurationReference</key>
-			<string>D87826E2911F4C01A6326D2A</string>
 			<key>buildSettings</key>
 			<dict>
 				<key>BUNDLE_LOADER</key>
@@ -1056,37 +1070,7 @@ fi
 			<key>name</key>
 			<string>Release</string>
 		</dict>
-		<key>783BA2CD18FA4171850F298C</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>D87826E2911F4C01A6326D2A</key>
+		<key>CBF7239E94884B0B8305517D</key>
 		<dict>
 			<key>includeInIndex</key>
 			<string>1</string>
@@ -1095,9 +1079,9 @@ fi
 			<key>lastKnownFileType</key>
 			<string>text.xcconfig</string>
 			<key>name</key>
-			<string>Pods-Acheron-ExamplesTests.xcconfig</string>
+			<string>Pods-Acheron-Examples.xcconfig</string>
 			<key>path</key>
-			<string>Pods/Pods-Acheron-ExamplesTests.xcconfig</string>
+			<string>Pods/Pods-Acheron-Examples.xcconfig</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>

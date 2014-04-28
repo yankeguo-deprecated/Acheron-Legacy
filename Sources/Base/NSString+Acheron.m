@@ -1,6 +1,6 @@
 //
-//  NSString+MKNetworkKitAdditions.m
-//  MKNetworkKitDemo
+//  NSString+ACNetworkKitAdditions.m
+//  ACNetworkKitDemo
 //
 //  Created by Mugunth Kumar (@mugunthkumar) on 11/11/11.
 //  Copyright (C) 2011-2020 by Steinlogic Consulting and Training Pte Ltd

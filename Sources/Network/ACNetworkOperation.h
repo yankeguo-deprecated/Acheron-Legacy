@@ -1,6 +1,6 @@
 //
-//  MKNetwork.h
-//  MKNetworkKit
+//  ACNetwork.h
+//  ACNetworkKit
 //
 //  Created by Mugunth Kumar (@mugunthkumar) on 11/11/11.
 //  Copyright (C) 2011-2020 by Steinlogic Consulting and Training Pte Ltd
@@ -23,75 +23,70 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#define kMKNetworkEngineOperationCountChanged @"kMKNetworkEngineOperationCountChanged"
-#define MKNETWORKCACHE_DEFAULT_COST 10
-#define MKNETWORKCACHE_DEFAULT_DIRECTORY @"MKNetworkKitCache"
-#define kMKNetworkKitDefaultCacheDuration 60 // 1 minute
-#define kMKNetworkKitDefaultImageHeadRequestDuration 3600*24*1 // 1 day (HEAD requests with eTag are sent only after expiry of this. Not that these are not RFC compliant, but needed for performance tuning)
-#define kMKNetworkKitDefaultImageCacheDuration 3600*24*7 // 1 day
+#define kACNetworkEngineOperationCountChanged @"kACNetworkEngineOperationCountChanged"
+#define ACNETWORKCACHE_DEFAULT_COST 10
+#define ACNETWORKCACHE_DEFAULT_DIRECTORY @"ACNetworkKitCache"
+#define kACNetworkKitDefaultCacheDuration 60 // 1 minute
+#define kACNetworkKitDefaultImageHeadRequestDuration 3600*24*1 // 1 day (HEAD requests with eTag are sent only after expiry of this. Not that these are not RFC compliant, but needed for performance tuning)
+#define kACNetworkKitDefaultImageCacheDuration 3600*24*7 // 1 day
 
 // if your server takes longer than 30 seconds to provide real data,
 // you should hire a better server developer.
 // on iOS (or any mobile device), 30 seconds is already considered high.
 
-#define kMKNetworkKitRequestTimeOutInSeconds 30
+#define kACNetworkKitRequestTimeOutInSeconds 30
 
 #import "Reachability.h"
 #import "AcheronBase.h"
 
-@class MKNetworkOperation;
+@class ACNetworkOperation;
 
 typedef enum {
-  MKNetworkOperationStateReady = 1,
-  MKNetworkOperationStateExecuting = 2,
-  MKNetworkOperationStateFinished = 3
-} MKNetworkOperationState;
+  ACNetworkOperationStateReady = 1,
+  ACNetworkOperationStateExecuting = 2,
+  ACNetworkOperationStateFinished = 3
+} ACNetworkOperationState;
 
-typedef void (^MKNKVoidBlock)(void);
-typedef void (^MKNKIDBlock)(void);
-typedef void (^MKNKProgressBlock)(double progress);
-typedef void (^MKNKResponseBlock)(MKNetworkOperation* completedOperation);
-#if TARGET_OS_IPHONE
-typedef void (^MKNKImageBlock) (UIImage* fetchedImage, NSURL* url, BOOL isInCache);
-#elif TARGET_OS_MAC
-typedef void (^MKNKImageBlock) (NSImage* fetchedImage, NSURL* url, BOOL isInCache);
-#endif
-typedef void (^MKNKResponseErrorBlock)(MKNetworkOperation* completedOperation, NSError* error);
-typedef void (^MKNKErrorBlock)(NSError* error);
+typedef void (^ACVoidBlock)(void);
+typedef void (^ACIDBlock)(void);
+typedef void (^ACProgressBlock)(double progress);
+typedef void (^ACResponseBlock)(ACNetworkOperation* completedOperation);
+typedef void (^ACImageBlock) (UIImage* fetchedImage, NSURL* url, BOOL isInCache);
+typedef void (^ACResponseErrorBlock)(ACNetworkOperation* completedOperation, NSError* error);
+typedef void (^ACErrorBlock)(NSError* error);
 
-typedef void (^MKNKAuthBlock)(NSURLAuthenticationChallenge* challenge);
+typedef void (^ACAuthBlock)(NSURLAuthenticationChallenge* challenge);
 
-typedef NSString* (^MKNKEncodingBlock) (NSDictionary* postDataDict);
+typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 
 typedef enum {
-  
-  MKNKPostDataEncodingTypeURL = 0, // default
-  MKNKPostDataEncodingTypeJSON,
-  MKNKPostDataEncodingTypePlist,
-  MKNKPostDataEncodingTypeCustom
-} MKNKPostDataEncodingType;
+  ACPostDataEncodingTypeURL = 0, // default
+  ACPostDataEncodingTypeJSON,
+  ACPostDataEncodingTypePlist,
+  ACPostDataEncodingTypeCustom
+} ACPostDataEncodingType;
 /*!
- @header MKNetworkOperation.h
+ @header ACNetworkOperation.h
  @abstract   Represents a single unique network operation.
  */
 
 /*!
- *  @class MKNetworkOperation
+ *  @class ACNetworkOperation
  *  @abstract Represents a single unique network operation.
  *  
  *  @discussion
- *	You normally create an instance of this class using the methods exposed by MKNetworkEngine
- *  Created operations are enqueued into the shared queue on MKNetworkEngine
- *  MKNetworkOperation encapsulates both request and response
- *  Printing a MKNetworkOperation prints out a cURL command that can be copied and pasted directly on terminal
+ *	You normally create an instance of this class using the methods exposed by ACNetworkEngine
+ *  Created operations are enqueued into the shared queue on ACNetworkEngine
+ *  ACNetworkOperation encapsulates both request and response
+ *  Printing a ACNetworkOperation prints out a cURL command that can be copied and pasted directly on terminal
  *  Freezable operations are serialized when network connectivity is lost and performed when connection is restored
  */
-@interface MKNetworkOperation : NSOperation {
+@interface ACNetworkOperation : NSOperation {
   
 @private
   int _state;
   BOOL _freezable;
-  MKNKPostDataEncodingType _postDataEncoding;
+  ACPostDataEncodingType _postDataEncoding;
 }
 
 /*!
@@ -133,7 +128,7 @@ typedef enum {
  *  @discussion
  *	Returns the operation's post data dictionary
  *  This property is readonly cannot be updated.
- *  Rather, updating this post dictionary doesn't have any effect on the MKNetworkOperation.
+ *  Rather, updating this post dictionary doesn't have any effect on the ACNetworkOperation.
  *  Use the addHeaders method to add post data parameters to the operation.
  *
  *  @seealso
@@ -169,8 +164,8 @@ typedef enum {
  *  
  *  @discussion
  *  Specifies which type of encoding should be used to encode post data.
- *  MKNKPostDataEncodingTypeURL is the default which defaults to application/x-www-form-urlencoded
- *  MKNKPostDataEncodingTypeJSON uses JSON encoding. 
+ *  ACPostDataEncodingTypeURL is the default which defaults to application/x-www-form-urlencoded
+ *  ACPostDataEncodingTypeJSON uses JSON encoding. 
  *  JSON Encoding is supported only in iOS 5 or Mac OS X 10.7 and above.
  *  On older operating systems, JSON Encoding reverts back to URL Encoding
  *  You can use the postDataEncodingHandler to provide a custom postDataEncoding 
@@ -180,7 +175,7 @@ typedef enum {
  *  setCustomPostDataEncodingHandler:forType:
  *
  */
-@property (nonatomic, assign) MKNKPostDataEncodingType postDataEncoding;
+@property (nonatomic, assign) ACPostDataEncodingType postDataEncoding;
 
 /*!
  *  @abstract Set a customized Post Data Encoding Handler for a given HTTP Content Type
@@ -194,7 +189,7 @@ typedef enum {
  *  @seealso
  *  postDataEncoding
  */
--(void) setCustomPostDataEncodingHandler:(MKNKEncodingBlock) postDataEncodingHandler forType:(NSString*) contentType;
+-(void) setCustomPostDataEncodingHandler:(ACEncodingBlock) postDataEncodingHandler forType:(NSString*) contentType;
 
 /*!
  *  @abstract String Encoding Property
@@ -213,7 +208,7 @@ typedef enum {
  *	Freezable operations are serialized when the network goes down and restored when the connectivity is up again.
  *  Only POST, PUT and DELETE operations are freezable.
  *  In short, any operation that changes the state of the server are freezable, creating a tweet, checking into a new location etc., Operations like fetching a list of tweets (think readonly GET operations) are not freezable.
- *  MKNetworkKit doesn't freeze (readonly) GET operations even if they are marked as freezable
+ *  ACNetworkKit doesn't freeze (readonly) GET operations even if they are marked as freezable
  */
 @property (nonatomic, assign) BOOL freezable;
 
@@ -232,7 +227,7 @@ typedef enum {
  *
  *  @discussion
  *	If you set this property to YES, the operation will continue as if the certificate was valid (if you use Server Trust Auth)
- *  The default value is NO. MKNetworkKit will not run an operation with a server that is not trusted.
+ *  The default value is NO. ACNetworkKit will not run an operation with a server that is not trusted.
  */
 @property (nonatomic, assign) BOOL shouldContinueWithInvalidCertificate;
 
@@ -242,8 +237,8 @@ typedef enum {
  *  
  *  @discussion
  *	If the network operation is a GET, this dictionary will be populated with relevant cache related headers
- *	MKNetworkKit assumes a 7 day cache for images and 1 minute cache for all requests with no-cache set
- *	This property is internal to MKNetworkKit. Modifying this is not recommended and will result in unexpected behaviour
+ *	ACNetworkKit assumes a 7 day cache for images and 1 minute cache for all requests with no-cache set
+ *	This property is internal to ACNetworkKit. Modifying this is not recommended and will result in unexpected behaviour
  */
 @property (strong, nonatomic) NSMutableDictionary *cacheHeaders;
 
@@ -292,7 +287,7 @@ typedef enum {
  *	If your request needs to be authenticated using a custom method (like a Web page/HTML Form), add a block method here
  *  and process the NSURLAuthenticationChallenge
  */
-@property (nonatomic, copy) MKNKAuthBlock authHandler;
+@property (nonatomic, copy) ACAuthBlock authHandler;
 
 /*!
  *  @abstract Handler that you implement to monitor reachability changes
@@ -301,7 +296,7 @@ typedef enum {
  *  @discussion
  *	The framework calls this handler whenever the operation state changes
  */
-@property (copy, nonatomic) void (^operationStateChangedHandler)(MKNetworkOperationState newState);
+@property (copy, nonatomic) void (^operationStateChangedHandler)(ACNetworkOperationState newState);
 
 /*!
  *  @abstract controls persistence of authentication credentials
@@ -330,7 +325,7 @@ typedef enum {
  *  
  *  @discussion
  *  The default value NO. No notification is shown when an error occurs.
- *  When set to YES, MKNetworkKit shows the NSError localizedDescription text as a notification when the app is in background and the network operation ended in error.
+ *  When set to YES, ACNetworkKit shows the NSError localizedDescription text as a notification when the app is in background and the network operation ended in error.
  *  To customize the local notification text, use the property localNotification
  
  *  @seealso
@@ -424,7 +419,7 @@ typedef enum {
  *  isCachedResponse
  *  addCompletionHandler:errorHandler:
  */
--(void) onCompletion:(MKNKResponseBlock) response onError:(MKNKErrorBlock) error DEPRECATED_ATTRIBUTE;
+-(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error DEPRECATED_ATTRIBUTE;
 
 /*!
  *  @abstract adds a block Handler for completion and error
@@ -437,7 +432,7 @@ typedef enum {
  *  @seealso
  *  onCompletion:onError:
  */
--(void) addCompletionHandler:(MKNKResponseBlock) response errorHandler:(MKNKResponseErrorBlock) error;
+-(void) addCompletionHandler:(ACResponseBlock) response errorHandler:(ACResponseErrorBlock) error;
 
 /*!
  *  @abstract Block Handler for tracking 304 not modified state
@@ -446,7 +441,7 @@ typedef enum {
  *	This method will be called if the server sends a 304 HTTP status for your request.
  *
  */
--(void) onNotModified:(MKNKVoidBlock) notModifiedBlock;
+-(void) onNotModified:(ACVoidBlock) notModifiedBlock;
 
 /*!
  *  @abstract Block Handler for tracking upload progress
@@ -456,7 +451,7 @@ typedef enum {
  *  The value range of the progress is 0 to 1.
  *
  */
--(void) onUploadProgressChanged:(MKNKProgressBlock) uploadProgressBlock;
+-(void) onUploadProgressChanged:(ACProgressBlock) uploadProgressBlock;
 
 /*!
  *  @abstract Block Handler for tracking download progress
@@ -466,7 +461,7 @@ typedef enum {
  *  The value range of the progress is 0 to 1.
  *
  */
--(void) onDownloadProgressChanged:(MKNKProgressBlock) downloadProgressBlock;
+-(void) onDownloadProgressChanged:(ACProgressBlock) downloadProgressBlock;
 
 /*!
  *  @abstract Uploads a resource from a stream
@@ -493,7 +488,7 @@ typedef enum {
  *  
  *  @discussion
  *	This method should be used to check if your response is cached.
- *  When you enable caching on MKNetworkEngine, your completionHandler will be called with cached data first and then
+ *  When you enable caching on ACNetworkEngine, your completionHandler will be called with cached data first and then
  *  with real data, later after fetching. In your handler, you can call this method to check if it is from cache or not
  *
  */
@@ -609,12 +604,12 @@ typedef enum {
  */
 -(void) operationFailedWithError:(NSError*) error;
 
-// internal methods called by MKNetworkEngine only.
+// internal methods called by ACNetworkEngine only.
 // Don't touch
 -(BOOL) isCacheable;
 -(void) setCachedData:(NSData*) cachedData;
--(void) setCacheHandler:(MKNKResponseBlock) cacheHandler;
--(void) updateHandlersFromOperation:(MKNetworkOperation*) operation;
+-(void) setCacheHandler:(ACResponseBlock) cacheHandler;
+-(void) updateHandlersFromOperation:(ACNetworkOperation*) operation;
 -(void) updateOperationBasedOnPreviousHeaders:(NSMutableDictionary*) headers;
 -(NSString*) uniqueIdentifier;
 

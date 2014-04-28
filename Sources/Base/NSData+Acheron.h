@@ -1,5 +1,5 @@
 //
-//  NSData+MKNKBase64.h
+//  NSData+ACBase64.h
 //  base64
 //
 //  Created by Matt Gallagher on 2009/06/03.

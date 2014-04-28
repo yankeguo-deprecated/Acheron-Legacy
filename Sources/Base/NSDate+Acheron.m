@@ -1,6 +1,6 @@
 //
 //  NSDate+RFC1123.m
-//  MKNetworkKit
+//  ACNetworkKit
 //
 //  Originally created by Marcus Rohrmoser
 //  http://blog.mro.name/2009/08/nsdateformatter-http-header/

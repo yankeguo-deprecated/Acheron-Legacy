@@ -1,6 +1,6 @@
 //
-//  MKNetworkEngine.m
-//  MKNetworkKit
+//  ACNetworkEngine.m
+//  ACNetworkKit
 //
 //  Created by Mugunth Kumar (@mugunthkumar) on 11/11/11.
 //  Copyright (C) 2011-2020 by Steinlogic Consulting and Training Pte Ltd
@@ -23,25 +23,25 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "MKNetworkEngine.h"
+#import "ACNetworkEngine.h"
 
 #define kFreezableOperationExtension @"mknetworkkitfrozenoperation"
 
 #ifdef __OBJC_GC__
-#error MKNetworkKit does not support Objective-C Garbage Collection
+#error ACNetworkKit does not support Objective-C Garbage Collection
 #endif
 
 #if TARGET_OS_IPHONE
 #ifndef __IPHONE_5_0
-#error MKNetworkKit does not support iOS 4 and lower
+#error ACNetworkKit does not support iOS 4 and lower
 #endif
 #endif
 
 #if ! __has_feature(objc_arc)
-#error MKNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
+#error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
-@interface MKNetworkEngine (/*Private Methods*/)
+@interface ACNetworkEngine (/*Private Methods*/)
 
 @property (copy, nonatomic) NSString *hostName;
 @property (strong, nonatomic) Reachability *reachability;
@@ -71,10 +71,10 @@
 
 static NSOperationQueue *_sharedNetworkQueue;
 
-@implementation MKNetworkEngine
+@implementation ACNetworkEngine
 
 // Network Queue is a shared singleton object.
-// no matter how many instances of MKNetworkEngine is created, there is one and only one network queue
+// no matter how many instances of ACNetworkEngine is created, there is one and only one network queue
 // In theory an app should contain as many network engines as the number of domains it talks to
 
 #pragma mark -
@@ -138,7 +138,7 @@ static NSOperationQueue *_sharedNetworkQueue;
       self.customHeaders = [headers mutableCopy];
     }
     
-    self.customOperationSubclass = [MKNetworkOperation class];
+    self.customOperationSubclass = [ACNetworkOperation class];
   }
   
   return self;
@@ -180,7 +180,7 @@ static NSOperationQueue *_sharedNetworkQueue;
 {
   if (object == _sharedNetworkQueue && [keyPath isEqualToString:@"operationCount"]) {
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMKNetworkEngineOperationCountChanged
+    [[NSNotificationCenter defaultCenter] postNotificationName:kACNetworkEngineOperationCountChanged
                                                         object:[NSNumber numberWithInteger:(NSInteger)[_sharedNetworkQueue operationCount]]];
 #if TARGET_OS_IPHONE
     [UIApplication sharedApplication].networkActivityIndicatorVisible =
@@ -233,7 +233,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   
   if(![self isCacheEnabled]) return;
   
-  for(MKNetworkOperation *operation in _sharedNetworkQueue.operations) {
+  for(ACNetworkOperation *operation in _sharedNetworkQueue.operations) {
     
     // freeze only freeable operations.
     if(![operation freezable]) continue;
@@ -269,7 +269,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   for(NSString *pendingOperationFile in pendingOperations) {
     
     NSString *archivePath = [[self cacheDirectoryName] stringByAppendingPathComponent:pendingOperationFile];
-    MKNetworkOperation *pendingOperation = [NSKeyedUnarchiver unarchiveObjectWithFile:archivePath];
+    ACNetworkOperation *pendingOperation = [NSKeyedUnarchiver unarchiveObjectWithFile:archivePath];
     [self enqueueOperation:pendingOperation];
     NSError *error2 = nil;
     [[NSFileManager defaultManager] removeItemAtPath:archivePath error:&error2];
@@ -296,12 +296,12 @@ static NSOperationQueue *_sharedNetworkQueue;
   self.customOperationSubclass = aClass;
 }
 
--(MKNetworkOperation*) operationWithPath:(NSString*) path {
+-(ACNetworkOperation*) operationWithPath:(NSString*) path {
   
   return [self operationWithPath:path params:nil];
 }
 
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                                   params:(NSDictionary*) body {
   
   return [self operationWithPath:path
@@ -309,14 +309,14 @@ static NSOperationQueue *_sharedNetworkQueue;
                       httpMethod:@"GET"];
 }
 
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                                   params:(NSDictionary*) body
                               httpMethod:(NSString*)method  {
   
   return [self operationWithPath:path params:body httpMethod:method ssl:NO];
 }
 
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                                   params:(NSDictionary*) body
                               httpMethod:(NSString*)method
                                      ssl:(BOOL) useSSL {
@@ -340,34 +340,34 @@ static NSOperationQueue *_sharedNetworkQueue;
   return [self operationWithURLString:urlString params:body httpMethod:method];
 }
 
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString {
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString {
   
   return [self operationWithURLString:urlString params:nil httpMethod:@"GET"];
 }
 
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString
                                        params:(NSDictionary*) body {
   
   return [self operationWithURLString:urlString params:body httpMethod:@"GET"];
 }
 
 
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString
                                        params:(NSDictionary*) body
                                    httpMethod:(NSString*)method {
   
-  MKNetworkOperation *operation = [[self.customOperationSubclass alloc] initWithURLString:urlString params:body httpMethod:method];
+  ACNetworkOperation *operation = [[self.customOperationSubclass alloc] initWithURLString:urlString params:body httpMethod:method];
   
   [self prepareHeaders:operation];
   return operation;
 }
 
--(void) prepareHeaders:(MKNetworkOperation*) operation {
+-(void) prepareHeaders:(ACNetworkOperation*) operation {
   
   [operation addHeaders:self.customHeaders];
 }
 
--(NSData*) cachedDataForOperation:(MKNetworkOperation*) operation {
+-(NSData*) cachedDataForOperation:(ACNetworkOperation*) operation {
   
   NSData *cachedData = (self.memoryCache)[[operation uniqueIdentifier]];
   if(cachedData) return cachedData;
@@ -384,16 +384,16 @@ static NSOperationQueue *_sharedNetworkQueue;
   return nil;
 }
 
--(void) enqueueOperation:(MKNetworkOperation*) operation {
+-(void) enqueueOperation:(ACNetworkOperation*) operation {
   
   [self enqueueOperation:operation forceReload:NO];
 }
 
--(void) enqueueOperation:(MKNetworkOperation*) operation forceReload:(BOOL) forceReload {
+-(void) enqueueOperation:(ACNetworkOperation*) operation forceReload:(BOOL) forceReload {
   
   NSParameterAssert(operation != nil);
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [operation setCacheHandler:^(MKNetworkOperation* completedCacheableOperation) {
+    [operation setCacheHandler:^(ACNetworkOperation* completedCacheableOperation) {
       
       // if this is not called, the request would have been a non cacheable request
       //completedCacheableOperation.cacheHeaders;
@@ -441,7 +441,7 @@ static NSOperationQueue *_sharedNetworkQueue;
         BOOL operationFinished = NO;
         if(index != NSNotFound) {
           
-          MKNetworkOperation *queuedOperation = (MKNetworkOperation*) (operations)[index];
+          ACNetworkOperation *queuedOperation = (ACNetworkOperation*) (operations)[index];
           operationFinished = [queuedOperation isFinished];
           if(!operationFinished)
             [queuedOperation updateHandlersFromOperation:operation];
@@ -462,7 +462,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   });
 }
 
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url completionHandler:(MKNKImageBlock) imageFetchedBlock errorHandler:(MKNKResponseErrorBlock) errorBlock {
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock {
  
 #ifdef DEBUG
   // I could enable caching here, but that hits performance and inturn affects table view scrolling
@@ -474,15 +474,15 @@ static NSOperationQueue *_sharedNetworkQueue;
       return nil;
     }
   
-  MKNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
+  ACNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
   
-  [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+  [op addCompletionHandler:^(ACNetworkOperation *completedOperation) {
     
     imageFetchedBlock([completedOperation responseImage],
                       url,
                       [completedOperation isCachedResponse]);
     
-  } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+  } errorHandler:^(ACNetworkOperation *completedOperation, NSError *error) {
     
     errorBlock(completedOperation, error);
   }];
@@ -494,7 +494,7 @@ static NSOperationQueue *_sharedNetworkQueue;
 
 #if TARGET_OS_IPHONE
 
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(MKNKImageBlock) imageFetchedBlock errorHandler:(MKNKResponseErrorBlock) errorBlock {
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock {
     
 #ifdef DEBUG
   // I could enable caching here, but that hits performance and inturn affects table view scrolling
@@ -506,9 +506,9 @@ static NSOperationQueue *_sharedNetworkQueue;
       return nil;
     }
   
-  MKNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
+  ACNetworkOperation *op = [self operationWithURLString:[url absoluteString]];
   
-  [op addCompletionHandler:^(MKNetworkOperation *completedOperation) {
+  [op addCompletionHandler:^(ACNetworkOperation *completedOperation) {
     [completedOperation decompressedResponseImageOfSize:size
                                       completionHandler:^(UIImage *decompressedImage) {
                                         
@@ -516,7 +516,7 @@ static NSOperationQueue *_sharedNetworkQueue;
                                                           url,
                                                           [completedOperation isCachedResponse]);
                                       }];
-  } errorHandler:^(MKNetworkOperation *completedOperation, NSError *error) {
+  } errorHandler:^(ACNetworkOperation *completedOperation, NSError *error) {
     
     errorBlock(completedOperation, error);
     DLog(@"%@", error);
@@ -527,16 +527,16 @@ static NSOperationQueue *_sharedNetworkQueue;
   return op;
 }
 
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size onCompletion:(MKNKImageBlock) imageFetchedBlock {
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size onCompletion:(ACImageBlock) imageFetchedBlock {
   
-  return [self imageAtURL:url size:size completionHandler:imageFetchedBlock errorHandler:^(MKNetworkOperation* op, NSError* error){}];
+  return [self imageAtURL:url size:size completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, NSError* error){}];
 }
 
 #endif
 
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(MKNKImageBlock) imageFetchedBlock
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(ACImageBlock) imageFetchedBlock
 {
-  return [self imageAtURL:url completionHandler:imageFetchedBlock errorHandler:^(MKNetworkOperation* op, NSError* error){}];
+  return [self imageAtURL:url completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, NSError* error){}];
 }
 
 
@@ -550,7 +550,7 @@ static NSOperationQueue *_sharedNetworkQueue;
   dispatch_once(&onceToken, ^{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
-    cacheDirectoryName = [documentsDirectory stringByAppendingPathComponent:MKNETWORKCACHE_DEFAULT_DIRECTORY];
+    cacheDirectoryName = [documentsDirectory stringByAppendingPathComponent:ACNETWORKCACHE_DEFAULT_DIRECTORY];
   });
   
   return cacheDirectoryName;
@@ -558,7 +558,7 @@ static NSOperationQueue *_sharedNetworkQueue;
 
 -(int) cacheMemoryCost {
   
-  return MKNETWORKCACHE_DEFAULT_COST;
+  return ACNETWORKCACHE_DEFAULT_COST;
 }
 
 -(void) saveCache {

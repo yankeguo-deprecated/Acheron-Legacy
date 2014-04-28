@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>D2F1964D-5BA6-4D25-80E2-F58BCADFDE3E</string>
+	<string>1A4447C9-B3B3-4F2B-B134-1E70F2C883C2</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Acheron-Examples</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>5D96B7E5-ACFF-49EE-9E8B-E5281512BF07</key>
-		<string>ssh://github.com/yanke-guo/YGDataKit.git</string>
+		<key>F930714B-D51C-4410-8C93-AD2BBA228D86</key>
+		<string>ssh://github.com/yanke-guo/Acheron.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Acheron-Examples/Acheron-Examples.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>5D96B7E5-ACFF-49EE-9E8B-E5281512BF07</key>
+		<key>F930714B-D51C-4410-8C93-AD2BBA228D86</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/yanke-guo/YGDataKit.git</string>
+	<string>ssh://github.com/yanke-guo/Acheron.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>5D96B7E5-ACFF-49EE-9E8B-E5281512BF07</string>
+	<string>F930714B-D51C-4410-8C93-AD2BBA228D86</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>5D96B7E5-ACFF-49EE-9E8B-E5281512BF07</string>
+			<string>F930714B-D51C-4410-8C93-AD2BBA228D86</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Acheron</string>
 		</dict>

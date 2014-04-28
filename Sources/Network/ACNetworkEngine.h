@@ -1,6 +1,6 @@
 //
-//  MKNetworkEngine.h
-//  MKNetworkKit
+//  ACNetworkEngine.h
+//  ACNetworkKit
 //
 //  Created by Mugunth Kumar (@mugunthkumar) on 11/11/11.
 //  Copyright (C) 2011-2020 by Steinlogic Consulting and Training Pte Ltd
@@ -23,24 +23,24 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#import "MKNetworkOperation.h"
+#import "ACNetworkOperation.h"
 
 /*!
- @header MKNetworkEngine.h
+ @header ACNetworkEngine.h
  @abstract   Represents a subclassable Network Engine for your app
  */
 
 /*!
- *  @class MKNetworkEngine
+ *  @class ACNetworkEngine
  *  @abstract Represents a subclassable Network Engine for your app
  *  
  *  @discussion
- *	This class is the heart of MKNetworkEngine
+ *	This class is the heart of ACNetworkEngine
  *  You create network operations and enqueue them here
- *  MKNetworkEngine encapsulates a Reachability object that relieves you of managing network connectivity losses
- *  MKNetworkEngine also allows you to provide custom header fields that gets appended automatically to every request
+ *  ACNetworkEngine encapsulates a Reachability object that relieves you of managing network connectivity losses
+ *  ACNetworkEngine also allows you to provide custom header fields that gets appended automatically to every request
  */
-@interface MKNetworkEngine : NSObject
+@interface ACNetworkEngine : NSObject
 
 /*!
  *  @abstract Initializes your network engine with a hostname
@@ -49,7 +49,7 @@
  *	Creates an engine for a given host name
  *  The hostname parameter is optional
  *  The hostname, if not null, initializes a Reachability notifier.
- *  Network reachability notifications are automatically taken care of by MKNetworkEngine
+ *  Network reachability notifications are automatically taken care of by ACNetworkEngine
  *  
  */
 - (id) initWithHostName:(NSString*) hostName;
@@ -61,7 +61,7 @@
  *	Creates an engine for a given host name
  *  The default headers you specify here will be appened to every operation created in this engine
  *  The hostname, if not null, initializes a Reachability notifier.
- *  Network reachability notifications are automatically taken care of by MKNetworkEngine
+ *  Network reachability notifications are automatically taken care of by ACNetworkEngine
  *  Both parameters are optional
  *  
  */
@@ -76,7 +76,7 @@
  *  The apiPath paramter is optional
  *  The apiPath is prefixed to every call to operationWithPath: You can use this method if your server's API location is not at the root (/)
  *  The hostname, if not null, initializes a Reachability notifier.
- *  Network reachability notifications are automatically taken care of by MKNetworkEngine
+ *  Network reachability notifications are automatically taken care of by ACNetworkEngine
  *  
  */
 - (id) initWithHostName:(NSString*) hostName apiPath:(NSString*) apiPath customHeaderFields:(NSDictionary*) headers;
@@ -86,24 +86,24 @@
  *  
  *  @discussion
  *	Creates an operation with the given URL path.
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The HTTP Method is implicitly assumed to be GET
  *  
  */
 
--(MKNetworkOperation*) operationWithPath:(NSString*) path;
+-(ACNetworkOperation*) operationWithPath:(NSString*) path;
 
 /*!
  *  @abstract Creates a simple GET Operation with a request URL and parameters
  *  
  *  @discussion
  *	Creates an operation with the given URL path.
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The body dictionary in this method gets attached to the URL as query parameters
  *  The HTTP Method is implicitly assumed to be GET
  *  
  */
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                          params:(NSDictionary*) body;
 
 /*!
@@ -111,12 +111,12 @@
  *  
  *  @discussion
  *	Creates an operation with the given URL path.
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The params dictionary in this method gets attached to the URL as query parameters if the HTTP Method is GET/DELETE
  *  The params dictionary is attached to the body if the HTTP Method is POST/PUT
  *  The HTTP Method is implicitly assumed to be GET
  */
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                          params:(NSDictionary*) body
                    httpMethod:(NSString*)method;
 
@@ -127,12 +127,12 @@
  *	Creates an operation with the given URL path.
  *  The ssl option when true changes the URL to https.
  *  The ssl option when false changes the URL to http.
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The params dictionary in this method gets attached to the URL as query parameters if the HTTP Method is GET/DELETE
  *  The params dictionary is attached to the body if the HTTP Method is POST/PUT
  *  The previously mentioned methods operationWithPath: and operationWithPath:params: call this internally
  */
--(MKNetworkOperation*) operationWithPath:(NSString*) path
+-(ACNetworkOperation*) operationWithPath:(NSString*) path
                          params:(NSDictionary*) body
                    httpMethod:(NSString*)method 
                           ssl:(BOOL) useSSL;
@@ -143,10 +143,10 @@
  *  @discussion
  *	Creates an operation with the given absolute URL.
  *  The hostname of the engine is *NOT* prefixed
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The HTTP method is implicitly assumed to be GET.
  */
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString;
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString;
 
 /*!
  *  @abstract Creates a simple GET Operation with a request URL and parameters
@@ -154,11 +154,11 @@
  *  @discussion
  *	Creates an operation with the given absolute URL.
  *  The hostname of the engine is *NOT* prefixed
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The body dictionary in this method gets attached to the URL as query parameters
  *  The HTTP method is implicitly assumed to be GET.
  */
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString
                                        params:(NSDictionary*) body;
 
 /*!
@@ -167,15 +167,15 @@
  *  @discussion
  *	Creates an operation with the given absolute URL.
  *  The hostname of the engine is *NOT* prefixed
- *  The default headers you specified in your MKNetworkEngine subclass gets added to the headers
+ *  The default headers you specified in your ACNetworkEngine subclass gets added to the headers
  *  The params dictionary in this method gets attached to the URL as query parameters if the HTTP Method is GET/DELETE
  *  The params dictionary is attached to the body if the HTTP Method is POST/PUT
  *	This method can be over-ridden by subclasses to tweak the operation creation mechanism.
- *  You would typically over-ride this method to create a subclass of MKNetworkOperation (if you have one). After you create it, you should call [super prepareHeaders:operation] to attach any custom headers from super class.
+ *  You would typically over-ride this method to create a subclass of ACNetworkOperation (if you have one). After you create it, you should call [super prepareHeaders:operation] to attach any custom headers from super class.
  *  @seealso
  *  prepareHeaders:
  */
--(MKNetworkOperation*) operationWithURLString:(NSString*) urlString
+-(ACNetworkOperation*) operationWithURLString:(NSString*) urlString
                               params:(NSDictionary*) body
                         httpMethod:(NSString*) method;
 
@@ -183,13 +183,13 @@
  *  @abstract adds the custom default headers
  *  
  *  @discussion
- *	This method adds custom default headers to the factory created MKNetworkOperation.
+ *	This method adds custom default headers to the factory created ACNetworkOperation.
  *	This method can be over-ridden by subclasses to add more default headers if necessary.
  *  You would typically over-ride this method if you have over-ridden operationWithURLString:params:httpMethod:.
  *  @seealso
  *  operationWithURLString:params:httpMethod:
  */
--(void) prepareHeaders:(MKNetworkOperation*) operation;
+-(void) prepareHeaders:(ACNetworkOperation*) operation;
 
 #if TARGET_OS_IPHONE
 /*!
@@ -198,11 +198,11 @@
  *  @discussion
  *	Creates an operation with the given image URL.
  *  The hostname of the engine is *NOT* prefixed.
- *  The image is returned to the caller via MKNKImageBlock callback block. This image is resized as per the size and decompressed in background.
+ *  The image is returned to the caller via ACImageBlock callback block. This image is resized as per the size and decompressed in background.
  *  @seealso
  *  imageAtUrl:onCompletion:
  */
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size onCompletion:(MKNKImageBlock) imageFetchedBlock DEPRECATED_ATTRIBUTE;
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size onCompletion:(ACImageBlock) imageFetchedBlock DEPRECATED_ATTRIBUTE;
 
 /*!
  *  @abstract Handy helper method for fetching images
@@ -210,9 +210,9 @@
  *  @discussion
  *	Creates an operation with the given image URL.
  *  The hostname of the engine is *NOT* prefixed.
- *  The image is returned to the caller via MKNKImageBlock callback block.
+ *  The image is returned to the caller via ACImageBlock callback block.
  */
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(MKNKImageBlock) imageFetchedBlock DEPRECATED_ATTRIBUTE;
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(ACImageBlock) imageFetchedBlock DEPRECATED_ATTRIBUTE;
 
 /*!
  *  @abstract Handy helper method for fetching images in the background
@@ -220,11 +220,11 @@
  *  @discussion
  *	Creates an operation with the given image URL.
  *  The hostname of the engine is *NOT* prefixed.
- *  The image is returned to the caller via MKNKImageBlock callback block. This image is resized as per the size and decompressed in background.
+ *  The image is returned to the caller via ACImageBlock callback block. This image is resized as per the size and decompressed in background.
  *  @seealso
  *  imageAtUrl:onCompletion:
  */
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url completionHandler:(MKNKImageBlock) imageFetchedBlock errorHandler:(MKNKResponseErrorBlock) errorBlock;
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock;
 
 /*!
  *  @abstract Handy helper method for fetching images asynchronously in the background
@@ -232,11 +232,11 @@
  *  @discussion
  *	Creates an operation with the given image URL.
  *  The hostname of the engine is *NOT* prefixed.
- *  The image is returned to the caller via MKNKImageBlock callback block. This image is resized as per the size and decompressed in background.
+ *  The image is returned to the caller via ACImageBlock callback block. This image is resized as per the size and decompressed in background.
  *  @seealso
  *  imageAtUrl:onCompletion:
  */
-- (MKNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(MKNKImageBlock) imageFetchedBlock errorHandler:(MKNKResponseErrorBlock) errorBlock;
+- (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size completionHandler:(ACImageBlock) imageFetchedBlock errorHandler:(ACResponseErrorBlock) errorBlock;
 #endif
 
 /*!
@@ -247,7 +247,7 @@
  *  @seealso
  *  enqueueOperation:forceReload:
  */
--(void) enqueueOperation:(MKNetworkOperation*) request;
+-(void) enqueueOperation:(ACNetworkOperation*) request;
 
 /*!
  *  @abstract Enqueues your operation into the shared queue.
@@ -259,7 +259,7 @@
  *  @seealso
  *  enqueueOperation:
  */
--(void) enqueueOperation:(MKNetworkOperation*) operation forceReload:(BOOL) forceReload;
+-(void) enqueueOperation:(ACNetworkOperation*) operation forceReload:(BOOL) forceReload;
 
 /*!
  *  @abstract HostName of the engine
@@ -287,7 +287,7 @@
  *  @property wifiOnlyMode
  *
  *  @discussion
- *	When you set this property to YES, MKNetworkEngine will not run operations on mobile data network.
+ *	When you set this property to YES, ACNetworkEngine will not run operations on mobile data network.
  */
 @property (assign, nonatomic) BOOL wifiOnlyMode;
 
@@ -316,9 +316,9 @@
  *  @abstract Registers an associated operation subclass
  *  
  *  @discussion
- *	When you override both MKNetworkEngine and MKNetworkOperation, you might want the engine's factory method
- *  to prepare operations of your MKNetworkOperation subclass. To create your own MKNetworkOperation subclasses from the factory method, you can register your MKNetworkOperation subclass using this method.
- *  This method is optional. If you don't use, factory methods in MKNetworkEngine creates MKNetworkOperation objects.
+ *	When you override both ACNetworkEngine and ACNetworkOperation, you might want the engine's factory method
+ *  to prepare operations of your ACNetworkOperation subclass. To create your own ACNetworkOperation subclasses from the factory method, you can register your ACNetworkOperation subclass using this method.
+ *  This method is optional. If you don't use, factory methods in ACNetworkEngine creates ACNetworkOperation objects.
  */
 -(void) registerOperationSubclass:(Class) aClass;
 
@@ -327,7 +327,7 @@
  *  
  *  @discussion
  *	This method can be over-ridden by subclasses to provide an alternative cache directory
- *  The default directory (MKNetworkKitCache) within the NSCaches directory will be used otherwise
+ *  The default directory (ACNetworkKitCache) within the NSCaches directory will be used otherwise
  *  Overriding this method is optional
  */
 -(NSString*) cacheDirectoryName;
@@ -337,7 +337,7 @@
  *  
  *  @discussion
  *	This method can be over-ridden by subclasses to provide an alternative in memory cache size.
- *  By default, MKNetworkKit caches 10 recent requests in memory
+ *  By default, ACNetworkKit caches 10 recent requests in memory
  *  The default size is 10
  *  Overriding this method is optional
  */
@@ -348,7 +348,7 @@
  *  
  *  @discussion
  *	This method should be called explicitly to enable caching for this engine.
- *  By default, MKNetworkKit doens't cache your requests.
+ *  By default, ACNetworkKit doens't cache your requests.
  *  The cacheMemoryCost and cacheDirectoryName will be used when you turn caching on using this method.
  */
 -(void) useCache;
@@ -358,7 +358,7 @@
  *  
  *  @discussion
  *	This method is a handy helper that you can use to clear cached data.
- *  By default, MKNetworkKit doens't cache your requests. Use this only when you enabled caching
+ *  By default, ACNetworkKit doens't cache your requests. Use this only when you enabled caching
  *  @seealso
  *  useCache
  */
