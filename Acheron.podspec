@@ -10,16 +10,27 @@ Pod::Spec.new do |s|
   s.header_mappings_dir =  'Acheron/'
   s.requires_arc      =  true
 
-  s.subspec 'Base' do |sp|
-    sp.source_files = 'Sources/Base/*.{h,m}'
+  s.subspec 'Log' do |sp|
+    sp.source_files = 'Sources/Log/*.{h,m}'
+  end
+
+  s.subspec 'Assert' do |sp|
+    sp.source_files = 'Sources/Assert/*.{h,m}'
+    sp.dependency 'Acheron/Log'
+  end
+
+  s.subspec 'Common' do |sp|
+    sp.source_files = 'Sources/Common/*.{h,m}'
     sp.frameworks   = 'Security'
+    sp.dependency 'Acheron/Log'
+    sp.dependency 'Acheron/Assert'
   end
 
   s.subspec 'Network' do |sp|
     sp.source_files = 'Sources/Network/*.{h,m}'
     sp.frameworks   = 'CFNetwork', 'Security'
     sp.dependency 'Reachability', '~> 3.1.0'
-    sp.dependency 'Acheron/Base'
+    sp.dependency 'Acheron/Common'
   end
 
 end

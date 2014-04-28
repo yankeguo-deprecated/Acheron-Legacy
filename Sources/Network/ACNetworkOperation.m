@@ -24,6 +24,7 @@
 //  THE SOFTWARE.
 
 #import "ACNetworkOperation.h"
+#import "ACNetworkOperation_Internal.h"
 
 #ifdef __OBJC_GC__
 # error ACNetworkKit does not support Objective-C Garbage Collection
@@ -37,20 +38,66 @@
 # error ACNetworkKit is ARC only. Either turn on ARC for the project or use -fobjc-arc flag
 #endif
 
-OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
+// https://developer.apple.com/library/mac/#documentation/security/conceptual/CertKeyTrustProgGuide/iPhone_Tasks/iPhone_Tasks.html
+OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
                                  SecIdentityRef *outIdentity,
                                  SecTrustRef *outTrust,
-                                 CFStringRef keyPassword);
+                                 CFStringRef keyPassword)
+{
+  OSStatus securityError = errSecSuccess;
+  
+  
+  const void *keys[] =   { kSecImportExportPassphrase };
+  const void *values[] = { keyPassword };
+  CFDictionaryRef optionsDictionary = NULL;
+  
+  /* Create a dictionary containing the passphrase if one
+   was specified.  Otherwise, create an empty dictionary. */
+  optionsDictionary = CFDictionaryCreate(
+                                         NULL, keys,
+                                         values, (keyPassword ? 1 : 0),
+                                         NULL, NULL);  // 6
+  
+  CFArrayRef items = NULL;
+  securityError = SecPKCS12Import(inPKCS12Data,
+                                  optionsDictionary,
+                                  &items);                    // 7
+  
+  
+  //
+  if (securityError == 0) {                                   // 8
+    CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
+    const void *tempIdentity = NULL;
+    tempIdentity = CFDictionaryGetValue (myIdentityAndTrust,
+                                         kSecImportItemIdentity);
+    CFRetain(tempIdentity);
+    *outIdentity = (SecIdentityRef)tempIdentity;
+    const void *tempTrust = NULL;
+    tempTrust = CFDictionaryGetValue (myIdentityAndTrust, kSecImportItemTrust);
+    
+    CFRetain(tempTrust);
+    *outTrust = (SecTrustRef)tempTrust;
+  }
+  
+  if (optionsDictionary)
+    CFRelease(optionsDictionary);                           // 9
+  
+  if (items)
+    CFRelease(items);
+  
+  return securityError;
+}
 
 @interface ACNetworkOperation (/*Private Methods*/)
+
 @property (strong, nonatomic) NSURLConnection *connection;
 @property (copy, nonatomic) NSString *uniqueId;
 @property (strong, nonatomic) NSMutableURLRequest *request;
 @property (strong, nonatomic) NSHTTPURLResponse *response;
 
-@property (strong, nonatomic) NSMutableDictionary *fieldsToBePosted;
-@property (strong, nonatomic) NSMutableArray *filesToBePosted;
-@property (strong, nonatomic) NSMutableArray *dataToBePosted;
+@property (strong, nonatomic) NSMutableDictionary * fieldsToBePosted;
+@property (strong, nonatomic) NSMutableArray      * filesToBePosted;
+@property (strong, nonatomic) NSMutableArray      * dataToBePosted;
 
 @property (copy, nonatomic) NSString *username;
 @property (copy, nonatomic) NSString *password;
@@ -82,16 +129,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId;
 
 @property (strong, nonatomic) NSError *error;
-
-- (id)initWithURLString:(NSString *)aURLString
-                 params:(NSDictionary *)body
-             httpMethod:(NSString *)method;
-
--(NSData*) bodyData;
-
--(NSString*) encodedPostDataString;
-- (void) showLocalNotification;
-- (void) endBackgroundTask;
 
 @end
 
@@ -907,55 +944,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,
   [self endBackgroundTask];
 }
 
-// https://developer.apple.com/library/mac/#documentation/security/conceptual/CertKeyTrustProgGuide/iPhone_Tasks/iPhone_Tasks.html
-OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
-                                 SecIdentityRef *outIdentity,
-                                 SecTrustRef *outTrust,
-                                 CFStringRef keyPassword)
-{
-  OSStatus securityError = errSecSuccess;
-  
-  
-  const void *keys[] =   { kSecImportExportPassphrase };
-  const void *values[] = { keyPassword };
-  CFDictionaryRef optionsDictionary = NULL;
-  
-  /* Create a dictionary containing the passphrase if one
-   was specified.  Otherwise, create an empty dictionary. */
-  optionsDictionary = CFDictionaryCreate(
-                                         NULL, keys,
-                                         values, (keyPassword ? 1 : 0),
-                                         NULL, NULL);  // 6
-  
-  CFArrayRef items = NULL;
-  securityError = SecPKCS12Import(inPKCS12Data,
-                                  optionsDictionary,
-                                  &items);                    // 7
-  
-  
-  //
-  if (securityError == 0) {                                   // 8
-    CFDictionaryRef myIdentityAndTrust = CFArrayGetValueAtIndex (items, 0);
-    const void *tempIdentity = NULL;
-    tempIdentity = CFDictionaryGetValue (myIdentityAndTrust,
-                                         kSecImportItemIdentity);
-    CFRetain(tempIdentity);
-    *outIdentity = (SecIdentityRef)tempIdentity;
-    const void *tempTrust = NULL;
-    tempTrust = CFDictionaryGetValue (myIdentityAndTrust, kSecImportItemTrust);
-    
-    CFRetain(tempTrust);
-    *outTrust = (SecTrustRef)tempTrust;
-  }
-  
-  if (optionsDictionary)
-    CFRelease(optionsDictionary);                           // 9
-  
-  if (items)
-    CFRelease(items);
-  
-  return securityError;
-}
+
 
 - (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
   

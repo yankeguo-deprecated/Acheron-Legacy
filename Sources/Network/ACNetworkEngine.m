@@ -24,8 +24,9 @@
 //  THE SOFTWARE.
 
 #import "ACNetworkEngine.h"
+#import "ACNetworkOperation_Internal.h"
 
-#define kFreezableOperationExtension @"mknetworkkitfrozenoperation"
+#define kFreezableOperationExtension @"acnetworkkitfrozenoperation"
 
 #ifdef __OBJC_GC__
 # error ACNetworkKit does not support Objective-C Garbage Collection
@@ -50,13 +51,8 @@
 @property (nonatomic, strong) NSMutableArray *memoryCacheKeys;
 @property (nonatomic, strong) NSMutableDictionary *cacheInvalidationParams;
 
-#if OS_OBJECT_USE_OBJC
 @property (strong, nonatomic) dispatch_queue_t backgroundCacheQueue;
 @property (strong, nonatomic) dispatch_queue_t operationQueue;
-#else
-@property (assign, nonatomic) dispatch_queue_t backgroundCacheQueue;
-@property (assign, nonatomic) dispatch_queue_t operationQueue;
-#endif
 
 -(void) saveCache;
 -(void) saveCacheData:(NSData*) data forKey:(NSString*) cacheDataKey;
@@ -65,6 +61,7 @@
 -(void) checkAndRestoreFrozenOperations;
 
 -(BOOL) isCacheEnabled;
+
 @end
 
 static NSOperationQueue *_sharedNetworkQueue;
@@ -106,8 +103,8 @@ static NSOperationQueue *_sharedNetworkQueue;
   if((self = [super init])) {
     
     self.apiPath = apiPath;
-    self.backgroundCacheQueue = dispatch_queue_create("com.mknetworkkit.cachequeue", DISPATCH_QUEUE_SERIAL);
-    self.operationQueue = dispatch_queue_create("com.mknetworkkit.operationqueue", DISPATCH_QUEUE_SERIAL);
+    self.backgroundCacheQueue = dispatch_queue_create("com.acnetworkkit.cachequeue", DISPATCH_QUEUE_SERIAL);
+    self.operationQueue = dispatch_queue_create("com.acnetworkkit.operationqueue", DISPATCH_QUEUE_SERIAL);
     
     if(hostName) {
       [[NSNotificationCenter defaultCenter] addObserver:self
@@ -555,7 +552,7 @@ static NSOperationQueue *_sharedNetworkQueue;
       
       NSError *error = nil;
       [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-      ELog(error);
+      //TODO:ELog
     }
     
     [(self.memoryCache)[cacheKey] writeToFile:filePath atomically:YES];
@@ -590,7 +587,7 @@ static NSOperationQueue *_sharedNetworkQueue;
         
         NSError *error = nil;
         [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
-        ELog(error);
+        //TODO:Elog
       }
       [data2 writeToFile:filePath atomically:YES];
       

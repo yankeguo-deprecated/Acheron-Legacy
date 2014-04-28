@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AcheronLog.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

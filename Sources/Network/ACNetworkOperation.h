@@ -24,47 +24,41 @@
 //  THE SOFTWARE.
 
 #define kACNetworkEngineOperationCountChanged @"kACNetworkEngineOperationCountChanged"
-#define ACNETWORKCACHE_DEFAULT_COST 10
-#define ACNETWORKCACHE_DEFAULT_DIRECTORY @"ACNetworkKitCache"
-#define kACNetworkKitDefaultCacheDuration 60 // 1 minute
-#define kACNetworkKitDefaultImageHeadRequestDuration 3600*24*1 // 1 day (HEAD requests with eTag are sent only after expiry of this. Not that these are not RFC compliant, but needed for performance tuning)
-#define kACNetworkKitDefaultImageCacheDuration 3600*24*7 // 1 day
-
-// if your server takes longer than 30 seconds to provide real data,
-// you should hire a better server developer.
-// on iOS (or any mobile device), 30 seconds is already considered high.
-
-#define kACNetworkKitRequestTimeOutInSeconds 30
+#define ACNETWORKCACHE_DEFAULT_COST           10
+#define ACNETWORKCACHE_DEFAULT_DIRECTORY      @"ACNetworkKitCache"
+#define kACNetworkKitDefaultCacheDuration     60
+#define kACNetworkKitDefaultImageHeadRequestDuration  3600*24*1
+#define kACNetworkKitDefaultImageCacheDuration        3600*24*7
+#define kACNetworkKitRequestTimeOutInSeconds          30
 
 #import "Reachability.h"
-#import "AcheronBase.h"
+#import "AcheronCommon.h"
 
 @class ACNetworkOperation;
 
-typedef enum {
+typedef NS_ENUM(NSInteger,ACNetworkOperationState){
   ACNetworkOperationStateReady = 1,
   ACNetworkOperationStateExecuting = 2,
   ACNetworkOperationStateFinished = 3
-} ACNetworkOperationState;
+};
 
-typedef void (^ACVoidBlock)(void);
-typedef void (^ACIDBlock)(void);
-typedef void (^ACProgressBlock)(double progress);
-typedef void (^ACResponseBlock)(ACNetworkOperation* completedOperation);
-typedef void (^ACImageBlock) (UIImage* fetchedImage, NSURL* url, BOOL isInCache);
-typedef void (^ACResponseErrorBlock)(ACNetworkOperation* completedOperation, NSError* error);
-typedef void (^ACErrorBlock)(NSError* error);
-
-typedef void (^ACAuthBlock)(NSURLAuthenticationChallenge* challenge);
-
-typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
-
-typedef enum {
+typedef NS_ENUM(NSInteger,ACPostDataEncodingType){
   ACPostDataEncodingTypeURL = 0, // default
   ACPostDataEncodingTypeJSON,
   ACPostDataEncodingTypePlist,
   ACPostDataEncodingTypeCustom
-} ACPostDataEncodingType;
+};
+
+typedef void (^ACVoidBlock)(void);
+typedef void (^ACIDBlock)(void);
+typedef void (^ACProgressBlock)(double progress);
+typedef void (^ACImageBlock) (UIImage* fetchedImage, NSURL* url, BOOL isInCache);
+typedef void (^ACResponseBlock)(ACNetworkOperation* completedOperation);
+typedef void (^ACResponseErrorBlock)(ACNetworkOperation* completedOperation, NSError* error);
+typedef void (^ACErrorBlock)(NSError* error);
+typedef void (^ACAuthBlock)(NSURLAuthenticationChallenge* challenge);
+typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
+
 /*!
  @header ACNetworkOperation.h
  @abstract   Represents a single unique network operation.
@@ -89,146 +83,40 @@ typedef enum {
   ACPostDataEncodingType _postDataEncoding;
 }
 
-/*!
- *  @abstract Request URL Property
- *  @property url
- *  
- *  @discussion
- *	Returns the operation's URL
- *  This property is readonly cannot be updated. 
- *  To create an operation with a specific URL, use the operationWithURLString:params:httpMethod: 
- */
+//  Read-only url for this operation
 @property (nonatomic, copy, readonly) NSString *url;
 
-/*!
- *  @abstract The internal request object
- *  @property readonlyRequest
- *  
- *  @discussion
- *	Returns the operation's actual request object
- *  This property is readonly cannot be modified. 
- *  To create an operation with a new request, use the operationWithURLString:params:httpMethod: 
- */
+//  Read-only request
 @property (nonatomic, strong, readonly) NSURLRequest *readonlyRequest;
 
-/*!
- *  @abstract The internal HTTP Response Object
- *  @property readonlyResponse
- *  
- *  @discussion
- *	Returns the operation's actual response object
- *  This property is readonly cannot be updated. 
- */
+//  Read-only response
 @property (nonatomic, strong, readonly) NSHTTPURLResponse *readonlyResponse;
 
-/*!
- *  @abstract The internal HTTP Post data values
- *  @property readonlyPostDictionary
- *  
- *  @discussion
- *	Returns the operation's post data dictionary
- *  This property is readonly cannot be updated.
- *  Rather, updating this post dictionary doesn't have any effect on the ACNetworkOperation.
- *  Use the addHeaders method to add post data parameters to the operation.
- *
- *  @seealso
- *   addHeaders:
- */
+//  Read-only post fileds
 @property (nonatomic, copy, readonly) NSDictionary *readonlyPostDictionary;
 
-/*!
- *  @abstract The internal request object's method type
- *  @property HTTPMethod
- *  
- *  @discussion
- *	Returns the operation's method type
- *  This property is readonly cannot be modified. 
- *  To create an operation with a new method type, use the operationWithURLString:params:httpMethod: 
- */
+//  Read-only http method
 @property (nonatomic, copy, readonly) NSString *HTTPMethod;
 
-/*!
- *  @abstract The internal response object's status code
- *  @property HTTPStatusCode
- *  
- *  @discussion
- *	Returns the operation's response's status code.
- *  Returns 0 when the operation has not yet started and the response is not available.
- *  This property is readonly cannot be modified. 
- */
+//  Read-only http status code of response, return 0 when operation not started
 @property (nonatomic, assign, readonly) NSInteger HTTPStatusCode;
 
-/*!
- *  @abstract Post Data Encoding Type Property
- *  @property postDataEncoding
- *  
- *  @discussion
- *  Specifies which type of encoding should be used to encode post data.
- *  ACPostDataEncodingTypeURL is the default which defaults to application/x-www-form-urlencoded
- *  ACPostDataEncodingTypeJSON uses JSON encoding. 
- *  JSON Encoding is supported only in iOS 5 or Mac OS X 10.7 and above.
- *  On older operating systems, JSON Encoding reverts back to URL Encoding
- *  You can use the postDataEncodingHandler to provide a custom postDataEncoding 
- *  For example, JSON encoding using a third party library.
- *
- *  @seealso
- *  setCustomPostDataEncodingHandler:forType:
- *
- */
+//  Encoding for POST fileds, default to urlencoded form data (ACPostDataEncodingTypeURL)
 @property (nonatomic, assign) ACPostDataEncodingType postDataEncoding;
 
-/*!
- *  @abstract Set a customized Post Data Encoding Handler for a given HTTP Content Type
- *  
- *  @discussion
- *  If you need customized post data encoding support, provide a block method here.
- *  This block method will be invoked only when your HTTP Method is POST or PUT
- *  For default URL encoding or JSON encoding, use the property postDataEncoding
- *  If you change the postData format, it's your responsiblity to provide a correct Content-Type.
- *
- *  @seealso
- *  postDataEncoding
- */
+//  Set a customized Post Data Encoding Handler for a given HTTP Content Type
 -(void) setCustomPostDataEncodingHandler:(ACEncodingBlock) postDataEncodingHandler forType:(NSString*) contentType;
 
-/*!
- *  @abstract String Encoding Property
- *  @property stringEncoding
- *  
- *  @discussion
- *  Specifies which type of encoding should be used to encode URL strings
- */
+//  Specifies which type of encoding should be used to encode URL strings
 @property (nonatomic, assign) NSStringEncoding stringEncoding;
 
-/*!
- *  @abstract Freezable request
- *  @property freezable
- *  
- *  @discussion
- *	Freezable operations are serialized when the network goes down and restored when the connectivity is up again.
- *  Only POST, PUT and DELETE operations are freezable.
- *  In short, any operation that changes the state of the server are freezable, creating a tweet, checking into a new location etc., Operations like fetching a list of tweets (think readonly GET operations) are not freezable.
- *  ACNetworkKit doesn't freeze (readonly) GET operations even if they are marked as freezable
- */
+//  Mark this operation as freezable so it can resume after network recovery. Only for POST/PUT/DELETE
 @property (nonatomic, assign) BOOL freezable;
 
-/*!
- *  @abstract Error object
- *  @property error
- *  
- *  @discussion
- *	If the network operation results in an error, this will hold the response error, otherwise it will be nil
- */
+//  This will hold the response error, by default it will be nil
 @property (nonatomic, readonly, strong) NSError *error;
 
-/*!
- *  @abstract Boolean variable that states whether the operation should continue if the certificate is invalid.
- *  @property shouldContinueWithInvalidCertificate
- *
- *  @discussion
- *	If you set this property to YES, the operation will continue as if the certificate was valid (if you use Server Trust Auth)
- *  The default value is NO. ACNetworkKit will not run an operation with a server that is not trusted.
- */
+//  Default is NO
 @property (nonatomic, assign) BOOL shouldContinueWithInvalidCertificate;
 
 /*!
@@ -598,14 +486,6 @@ typedef enum {
  */
 -(void) operationFailedWithError:(NSError*) error;
 
-// internal methods called by ACNetworkEngine only.
-// Don't touch
--(BOOL) isCacheable;
--(void) setCachedData:(NSData*) cachedData;
--(void) setCacheHandler:(ACResponseBlock) cacheHandler;
--(void) updateHandlersFromOperation:(ACNetworkOperation*) operation;
--(void) updateOperationBasedOnPreviousHeaders:(NSMutableDictionary*) headers;
--(NSString*) uniqueIdentifier;
 
 - (id)initWithURLString:(NSString *)aURLString
                  params:(NSDictionary *)params

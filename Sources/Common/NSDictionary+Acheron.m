@@ -24,7 +24,7 @@
 //  THE SOFTWARE.
 
 #import "NSString+Acheron.h"
-#import "AcheronBase.h"
+#import "AcheronCommon.h"
 
 @implementation NSDictionary (Acheron)
 
