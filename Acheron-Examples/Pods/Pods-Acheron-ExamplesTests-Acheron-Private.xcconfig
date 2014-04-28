@@ -1,5 +1,0 @@
-#include "Pods-Acheron-ExamplesTests-Acheron.xcconfig"
-GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/Acheron" "${PODS_ROOT}/BuildHeaders/Sources/Base" "${PODS_ROOT}/BuildHeaders/Sources/Network" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/Acheron" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/Sources/Base" "${PODS_ROOT}/Headers/Sources/Network"
-OTHER_LDFLAGS = -ObjC ${PODS_ACHERON_EXAMPLESTESTS_ACHERON_OTHER_LDFLAGS}
-PODS_ROOT = ${SRCROOT}
