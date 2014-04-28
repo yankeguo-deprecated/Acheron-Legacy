@@ -1,0 +1,10 @@
+platform :ios, "6.0"
+
+target "Acheron-Examples" do
+  pod 'Acheron',:path=>'../'
+end
+
+target "Acheron-ExamplesTests" do
+  pod 'Acheron',:path=>'../'
+end
+
