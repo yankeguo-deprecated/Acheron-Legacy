@@ -378,6 +378,13 @@ static NSOperationQueue *_sharedNetworkQueue;
 -(void) enqueueOperation:(ACNetworkOperation*) operation forceReload:(BOOL) forceReload {
   
   NSParameterAssert(operation != nil);
+  
+  //  Add dependencies
+  for (ACNetworkOperation * opt in operation.dependencies) {
+    ACAssert(opt.isReady, @"Dependencies are not ready");
+    [self enqueueOperation:opt forceReload:forceReload];
+  }
+  
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [operation setCacheHandler:^(ACNetworkOperation* completedCacheableOperation) {
       

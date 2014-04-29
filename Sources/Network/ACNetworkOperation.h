@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger,ACPostDataEncodingType){
   ACPostDataEncodingTypeCustom
 };
 
+typedef void (^ACDependenciesFinishedBlock)(ACNetworkOperation * operation,NSArray* depencencies);
 typedef void (^ACVoidBlock)(void);
 typedef void (^ACIDBlock)(void);
 typedef void (^ACProgressBlock)(double progress);
@@ -148,6 +149,11 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  setUserName:password:
  */
 -(void) setUsername:(NSString*) username password:(NSString*) password basicAuth:(BOOL) bYesOrNo;
+
+
+//  Use to modify post values before operation started
+
+-(void) setPostFieldValue:(id)value forKey:(NSString*)key;
 
 /*!
  *  @abstract Authentication methods (Client Certificate)
@@ -291,6 +297,10 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  */
 -(void) addData:(NSData*) data forKey:(NSString*) key mimeType:(NSString*) mimeType fileName:(NSString*) fileName;
 
+//  Will be called before operation start and after all depencencies finished
+
+- (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block;
+
 /*!
  *  @abstract Block Handler for completion and error
  *  
@@ -305,6 +315,7 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  isCachedResponse
  *  addCompletionHandler:errorHandler:
  */
+
 -(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error DEPRECATED_ATTRIBUTE;
 
 /*!
@@ -461,6 +472,17 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  iOS 5 and above or Mac OS 10.7 and above
  */
 -(void) responseJSONWithCompletionHandler:(void (^)(id jsonObject)) jsonDecompressionHandler;
+
+
+/*********************************
+ *     Overridable Methods
+ *********************************/
+
+
+- (id)initWithURLString:(NSString *)aURLString
+                 params:(NSDictionary *)params
+             httpMethod:(NSString *)method;
+
 /*!
  *  @abstract Overridable custom method where you can add your custom business logic error handling
  *  
@@ -471,6 +493,7 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  ended as a failed call
  *
  */
+
 -(void) operationSucceeded;
 
 /*!
@@ -484,10 +507,12 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  are going to try alternative login mechanisms.
  *
  */
+
 -(void) operationFailedWithError:(NSError*) error;
 
 
-- (id)initWithURLString:(NSString *)aURLString
-                 params:(NSDictionary *)params
-             httpMethod:(NSString *)method;
+//  Overriden addDependency, only ACNetworkOperation can be added as denpendency, all dependency will be enqueued to ACNetworkEngine.
+
+- (void)addDependency:(NSOperation *)op;
+
 @end

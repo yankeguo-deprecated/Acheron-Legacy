@@ -102,6 +102,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 @property (copy, nonatomic) NSString *username;
 @property (copy, nonatomic) NSString *password;
 
+@property (nonatomic, copy) ACDependenciesFinishedBlock depencendiesFinishedBlock;
 @property (nonatomic, strong) NSMutableArray *responseBlocks;
 @property (nonatomic, strong) NSMutableArray *errorBlocks;
 @property (nonatomic, strong) NSMutableArray *errorBlocksType2;
@@ -389,6 +390,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
   [encoder encodeObject:self.downloadStreams forKey:@"downloadStreams"];
   [encoder encodeInteger:self.startPosition forKey:@"startPosition"];
   [encoder encodeInteger:self.credentialPersistence forKey:@"credentialPersistence"];
+  [encoder encodeObject:self.dependencies forKey:@"dependencies"];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -416,6 +418,10 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
     self.downloadStreams = [decoder decodeObjectForKey:@"downloadStreams"];
     self.startPosition = [decoder decodeIntegerForKey:@"startPosition"];
     self.credentialPersistence = [decoder decodeIntegerForKey:@"credentialPersistence"];
+    NSArray * dependencies = [decoder decodeObjectForKey:@"dependencies"];
+    for (ACNetworkOperation * opt in dependencies) {
+      [self addDependency:opt];
+    }
   }
   return self;
 }
@@ -452,6 +458,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
   [theCopy setCacheHandlingBlock:self.cacheHandlingBlock];
   [theCopy setStartPosition:self.startPosition];
   [theCopy setCredentialPersistence:self.credentialPersistence];
+  [theCopy setDepencendiesFinishedBlock:self.depencendiesFinishedBlock];
   
   return theCopy;
 }
@@ -504,6 +511,17 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
   NSString *base64EncodedString = [[[NSString stringWithFormat:@"%@:%@", self.username, self.password] dataUsingEncoding:NSUTF8StringEncoding] base64EncodedString];
   
   [self setAuthorizationHeaderValue:base64EncodedString forAuthType:@"Basic"];
+}
+
+-(void) setPostFieldValue:(id)value forKey:(NSString*)key
+{
+  ACAssert(self.isReady, @"Cannot modify postfiled after started");
+  [self.filesToBePosted setValue:value forKey:key];
+}
+
+- (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block
+{
+  self.depencendiesFinishedBlock = block;
 }
 
 -(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error {
@@ -817,6 +835,10 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 
 - (void) start
 {
+  if ([self.dependencies count] != 0 && self.depencendiesFinishedBlock) {
+    self.depencendiesFinishedBlock(self,self.dependencies);
+  }
+  
   self.backgroundTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1398,6 +1420,12 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   DLog(@"State: %d", [[UIApplication sharedApplication] applicationState]);
   if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
     [self showLocalNotification];
+}
+
+- (void)addDependency:(NSOperation *)op
+{
+  ACAssert([op isKindOfClass:[ACNetworkOperation class]], @"Only subclass of ACNetworkOperation can be added as dependency");
+  [super addDependency:op];
 }
 
 @end
