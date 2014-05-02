@@ -516,7 +516,13 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 -(void) setPostFieldValue:(id)value forKey:(NSString*)key
 {
   ACAssert(self.isReady, @"Cannot modify postfiled after started");
-  [self.filesToBePosted setValue:value forKey:key];
+  [self.fieldsToBePosted setObject:value forKey:key];
+}
+
+-(void) removePostFieldForKey:(NSString*)key
+{
+  ACAssert(self.isReady, @"Cannot modify postfiled after started");
+  [self.fieldsToBePosted removeObjectForKey:key];
 }
 
 - (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block

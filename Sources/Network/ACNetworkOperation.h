@@ -155,6 +155,8 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 
 -(void) setPostFieldValue:(id)value forKey:(NSString*)key;
 
+-(void) removePostFieldForKey:(NSString*)key;
+
 /*!
  *  @abstract Authentication methods (Client Certificate)
  *  @property clientCertificate
@@ -473,6 +475,10 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  */
 -(void) responseJSONWithCompletionHandler:(void (^)(id jsonObject)) jsonDecompressionHandler;
 
+//  Overriden addDependency, only ACNetworkOperation can be added as denpendency, all dependency will be enqueued to ACNetworkEngine.
+
+- (void)addDependency:(NSOperation *)op;
+
 
 /*********************************
  *     Overridable Methods
@@ -509,10 +515,5 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  */
 
 -(void) operationFailedWithError:(NSError*) error;
-
-
-//  Overriden addDependency, only ACNetworkOperation can be added as denpendency, all dependency will be enqueued to ACNetworkEngine.
-
-- (void)addDependency:(NSOperation *)op;
 
 @end
