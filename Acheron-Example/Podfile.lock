@@ -3,6 +3,7 @@ PODS:
     - Acheron/Assert
     - Acheron/Common
     - Acheron/Log
+    - Acheron/Model
     - Acheron/Network
   - Acheron/Assert (0.1.0):
     - Acheron/Log
@@ -10,8 +11,11 @@ PODS:
     - Acheron/Assert
     - Acheron/Log
   - Acheron/Log (0.1.0)
+  - Acheron/Model (0.1.0):
+    - Acheron/Common
   - Acheron/Network (0.1.0):
     - Acheron/Common
+    - Acheron/Model
     - Reachability (~> 3.1.0)
   - Reachability (3.1.1)
 
@@ -23,7 +27,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Acheron: de2e29f9cf99c929eaba891c141237ed0107e013
+  Acheron: a4c47dcd30843f68c9e95d96e8b44ff8a3e27a0c
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
 
 COCOAPODS: 0.32.1

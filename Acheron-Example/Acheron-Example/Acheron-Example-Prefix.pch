@@ -16,4 +16,7 @@
 # import <AcheronLog.h>
 # import <AcheronAssert.h>
 # import <AcheronCommon.h>
+# import <AcheronNetwork.h>
+# import <AcheronModel.h>
+# import <Acheron/Assert/AcheronAssert.h>
 #endif
