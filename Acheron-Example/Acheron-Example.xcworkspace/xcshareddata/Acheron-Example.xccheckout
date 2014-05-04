@@ -5,16 +5,16 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>1A4447C9-B3B3-4F2B-B134-1E70F2C883C2</string>
+	<string>605D181F-5DDD-4BD3-8EEC-A4A3A25ECAD4</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Acheron-Examples</string>
+	<string>Acheron-Example</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>F930714B-D51C-4410-8C93-AD2BBA228D86</key>
 		<string>ssh://github.com/yanke-guo/Acheron.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Acheron-Examples/Acheron-Examples.xcworkspace</string>
+	<string>Acheron-Example/Acheron-Example.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>F930714B-D51C-4410-8C93-AD2BBA228D86</key>

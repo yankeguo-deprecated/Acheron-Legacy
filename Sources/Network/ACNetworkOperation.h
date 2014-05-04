@@ -304,23 +304,6 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 - (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block;
 
 /*!
- *  @abstract Block Handler for completion and error
- *  
- *  @discussion
- *	This method sets your completion and error blocks. If your operation's response data was previously called,
- *  the completion block will be called almost immediately with the cached response. You can check if the completion 
- *  handler was invoked with a cached data or with real data by calling the isCachedResponse method.
- *  This method is deprecated in favour of addCompletionHandler:errorHandler: that returns the completedOperation in the error block as well.
- *  While I will still continue to support this method, I'll remove it completely in a future release.
- *
- *  @seealso
- *  isCachedResponse
- *  addCompletionHandler:errorHandler:
- */
-
--(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error DEPRECATED_ATTRIBUTE;
-
-/*!
  *  @abstract adds a block Handler for completion and error
  *
  *  @discussion

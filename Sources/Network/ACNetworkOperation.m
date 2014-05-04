@@ -527,7 +527,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 
 - (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block
 {
-  self.depencendiesFinishedBlock = block;
+  self.depencendiesFinishedBlock = [block copy];
 }
 
 -(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error {
@@ -560,8 +560,6 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 }
 
 -(void) setUploadStream:(NSInputStream*) inputStream {
-  
-#warning Method not tested yet.
   self.request.HTTPBodyStream = inputStream;
 }
 
