@@ -33,7 +33,7 @@ typedef enum kCustomizationTypes PropertyGetterType;
  * It features the property's name, type, whether it's a required property, 
  * and (optionally) the class protocol
  */
-@interface JSONModelClassProperty : NSObject
+@interface ACModelClassProperty : NSObject
 
 /** The name of the declared property (not the ivar name) */
 @property (copy, nonatomic) NSString* name;

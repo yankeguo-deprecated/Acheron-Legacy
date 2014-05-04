@@ -14,14 +14,14 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONKeyMapper.h"
+#import "ACKeyMapper.h"
 
-@interface JSONKeyMapper()
+@interface ACKeyMapper()
 @property (nonatomic, strong) NSMutableDictionary *toModelMap;
 @property (nonatomic, strong) NSMutableDictionary *toJSONMap;
 @end
 
-@implementation JSONKeyMapper
+@implementation ACKeyMapper
 
 -(instancetype)init
 {
@@ -34,13 +34,13 @@
     return self;
 }
 
--(instancetype)initWithJSONToModelBlock:(JSONModelKeyMapBlock)toModel
-                       modelToJSONBlock:(JSONModelKeyMapBlock)toJSON
+-(instancetype)initWithJSONToModelBlock:(ACModelKeyMapBlock)toModel
+                       modelToJSONBlock:(ACModelKeyMapBlock)toJSON
 {
     self = [self init];
     
     if (self) {
-        __weak JSONKeyMapper *myself = self;
+        __weak ACKeyMapper *myself = self;
         //the json to model convertion block
         _JSONToModelKeyBlock = ^NSString*(NSString* keyName) {
 
@@ -96,7 +96,7 @@
 
 +(instancetype)mapperFromUnderscoreCaseToCamelCase
 {
-    JSONModelKeyMapBlock toModel = ^ NSString* (NSString* keyName) {
+    ACModelKeyMapBlock toModel = ^ NSString* (NSString* keyName) {
 
         //bail early if no transformation required
         if ([keyName rangeOfString:@"_"].location==NSNotFound) return keyName;
@@ -109,7 +109,7 @@
         return camelCase;
     };
 
-    JSONModelKeyMapBlock toJSON = ^ NSString* (NSString* keyName) {
+    ACModelKeyMapBlock toJSON = ^ NSString* (NSString* keyName) {
         
         NSMutableString* result = [NSMutableString stringWithString:keyName];
         NSRange upperCharRange = [result rangeOfCharacterFromSet:[NSCharacterSet uppercaseLetterCharacterSet]];
@@ -150,12 +150,12 @@
 
 +(instancetype)mapperFromUpperCaseToLowerCase
 {
-    JSONModelKeyMapBlock toModel = ^ NSString* (NSString* keyName) {
+    ACModelKeyMapBlock toModel = ^ NSString* (NSString* keyName) {
         NSString*lowercaseString = [keyName lowercaseString];
         return lowercaseString;
     };
 
-    JSONModelKeyMapBlock toJSON = ^ NSString* (NSString* keyName) {
+    ACModelKeyMapBlock toJSON = ^ NSString* (NSString* keyName) {
 
         NSString *uppercaseString = [keyName uppercaseString];
 

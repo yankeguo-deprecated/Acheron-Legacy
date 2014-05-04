@@ -58,7 +58,7 @@ extern NSString* const kJSONModelKeyPath;
  * Custom NSError subclass with shortcut methods for creating 
  * the common JSONModel errors
  */
-@interface JSONModelError : NSError
+@interface ACModelError : NSError
 
 @property (strong, nonatomic) NSHTTPURLResponse* httpResponse;
 

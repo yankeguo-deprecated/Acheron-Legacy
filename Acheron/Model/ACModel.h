@@ -16,9 +16,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "JSONModelError.h"
-#import "JSONValueTransformer.h"
-#import "JSONKeyMapper.h"
+#import "ACModelError.h"
+#import "ACValueTransformer.h"
+#import "ACKeyMapper.h"
 
 #pragma mark - Property Protocols
 
@@ -55,7 +55,7 @@
 /**
  * Make all objects Optional compatible to avoid compiler warnings
  */
-@interface NSObject(JSONModelPropertyCompatibility)<Optional, Index, Ignore>
+@interface NSObject(ACModelPropertyCompatibility)<Optional, Index, Ignore>
 @end
 
 /**
@@ -69,7 +69,7 @@
 /**
  * Make all arrays ConvertOnDemand compatible to avoid compiler warnings
  */
-@interface NSArray(JSONModelPropertyCompatibility)<ConvertOnDemand>
+@interface NSArray(ACModelPropertyCompatibility)<ConvertOnDemand>
 @end
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@
  * A protocol describing an abstract JSONModel class
  * JSONModel conforms to this protocol, so it can use itself abstractly
  */
-@protocol AbstractJSONModelProtocol <NSObject, NSCopying, NSCoding>
+@protocol AbstractACModelProtocol <NSObject, NSCopying, NSCoding>
 
 @required
   /**
@@ -136,7 +136,7 @@
  * Instead you should subclass it, and define the properties you want your data model
  * to have as properties of your own class.
  */
-@interface JSONModel : NSObject <AbstractJSONModelProtocol>
+@interface ACModel : NSObject <AbstractACModelProtocol>
 
 /** @name Creating and initializing models */
 
@@ -148,7 +148,7 @@
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    * @see initWithString:usingEncoding:error: for use of custom text encodings
    */
-  -(instancetype)initWithString:(NSString*)string error:(JSONModelError**)err;
+  -(instancetype)initWithString:(NSString*)string error:(ACModelError**)err;
 
   /**
    * Create a new model instance and initialize it with the JSON from a text parameter using the given encoding.
@@ -158,7 +158,7 @@
    * @exception JSONModelTypeNotAllowedException thrown when unsported type is found in the incoming JSON, 
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    */
-  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(JSONModelError**)err;
+  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(ACModelError**)err;
 
   -(instancetype)initWithDictionary:(NSDictionary*)dict error:(NSError **)err;
 
@@ -271,7 +271,7 @@
    * Overwrite in your models if your property names don't match your JSON key names.
    * Lookup JSONKeyMapper docs for more details.
    */
-+(JSONKeyMapper*)keyMapper;
++(ACKeyMapper*)keyMapper;
 
 /**
  * Sets a key mapper which affects ALL the models in your project. Use this if you need only one mapper to work
@@ -282,7 +282,7 @@
  *
  * Lookup JSONKeyMapper docs for more details.
  */
-+(void)setGlobalKeyMapper:(JSONKeyMapper*)globalKeyMapper;
++(void)setGlobalKeyMapper:(ACKeyMapper*)globalKeyMapper;
 
 /**
  * Indicates whether the property with the given name is Optional.

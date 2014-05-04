@@ -7,7 +7,6 @@ Pod::Spec.new do |s|
   s.source           =  { :git => 'https://github.com/yanke_guo/Acheron.git', :tag => '0.1.0' }
 
   s.platform = :ios,'6.0'
-  s.header_mappings_dir =  'Acheron'
   s.requires_arc      =  true
 
   s.subspec 'Log' do |sp|

@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSString* (^JSONModelKeyMapBlock)(NSString* keyName);
+typedef NSString* (^ACModelKeyMapBlock)(NSString* keyName);
 
 /**
  * **You won't need to create or store instances of this class yourself.** If you want your model
@@ -48,27 +48,27 @@ typedef NSString* (^JSONModelKeyMapBlock)(NSString* keyName);
  * }
  * </pre>
  */
-@interface JSONKeyMapper : NSObject
+@interface ACKeyMapper : NSObject
 
 /** @name Name convertors */
 /** Block, which takes in a JSON key and converts it to the corresponding property name */
-@property (readonly, nonatomic) JSONModelKeyMapBlock JSONToModelKeyBlock;
+@property (readonly, nonatomic) ACModelKeyMapBlock JSONToModelKeyBlock;
 
 /** Block, which takes in a property name and converts it to the corresponding JSON key name */
-@property (readonly, nonatomic) JSONModelKeyMapBlock modelToJSONKeyBlock;
+@property (readonly, nonatomic) ACModelKeyMapBlock modelToJSONKeyBlock;
 
 /** @name Creating a key mapper */
 
 /**
  * Creates a JSONKeyMapper instance, based on the two blocks you provide this initializer.
- * The two parameters take in a JSONModelKeyMapBlock block:
- * <pre>NSString* (^JSONModelKeyMapBlock)(NSString* keyName)</pre>
+ * The two parameters take in a ACModelKeyMapBlock block:
+ * <pre>NSString* (^ACModelKeyMapBlock)(NSString* keyName)</pre>
  * The block takes in a string and returns the transformed (if at all) string.
  * @param toModel transforms JSON key name to your model property name
  * @param toJSON transforms your model property name to a JSON key
  */
--(instancetype)initWithJSONToModelBlock:(JSONModelKeyMapBlock)toModel
-                       modelToJSONBlock:(JSONModelKeyMapBlock)toJSON;
+-(instancetype)initWithJSONToModelBlock:(ACModelKeyMapBlock)toModel
+                       modelToJSONBlock:(ACModelKeyMapBlock)toJSON;
 
 /**
  * Creates a JSONKeyMapper instance, based on the mapping you provide

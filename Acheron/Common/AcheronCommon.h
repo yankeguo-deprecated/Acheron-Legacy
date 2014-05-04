@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-#import "AcheronLog.h"
-#import "AcheronAssert.h"
+#import <Acheron/AcheronLog.h>
+#import <Acheron/AcheronAssert.h>
 
 #import "NSData+Acheron.h"
 #import "NSDate+Acheron.h"

@@ -6,22 +6,22 @@
 //  Copyright (c) 2014 Underplot ltd. All rights reserved.
 //
 
-#import "JSONModel+CoreData.h"
+#import "ACModel+CoreData.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-@implementation JSONModel(CoreData)
+@implementation ACModel(CoreData)
 
 @end
 
-@implementation NSManagedObject(JSONModel)
+@implementation NSManagedObject(ACModel)
 
 +(NSString*)entityName
 {
     return nil;
 }
 
-+(instancetype)entityWithModel:(id<AbstractJSONModelProtocol>)model inContext:(NSManagedObjectContext*)context error:(NSError**)error
++(instancetype)entityWithModel:(id<AbstractACModelProtocol>)model inContext:(NSManagedObjectContext*)context error:(NSError**)error
 {
     return [self entityWithDictionary: [model toDictionary]
                           inContext: context
@@ -83,7 +83,7 @@
         if (![dictionaryKeys containsObject:key]) {
             //unmatched key
             if (error) {
-                *error = [JSONModelError errorInvalidDataWithTypeMismatch:[NSString stringWithFormat: @"Key \"%@\" not found in manged object's property list", key]];
+                *error = [ACModelError errorInvalidDataWithTypeMismatch:[NSString stringWithFormat: @"Key \"%@\" not found in manged object's property list", key]];
             }
             return NO;
         }

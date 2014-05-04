@@ -7,16 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JSONModel.h"
+#import "ACModel.h"
 #import <CoreData/CoreData.h>
 
-@interface JSONModel(CoreData)
+@interface ACModel(CoreData)
 
 @end
 
-@interface NSManagedObject(JSONModel)
+@interface NSManagedObject(ACModel)
 
-+(instancetype)entityWithModel:(id<AbstractJSONModelProtocol>)model inContext:(NSManagedObjectContext*)context error:(NSError**)error;
++(instancetype)entityWithModel:(id<AbstractACModelProtocol>)model inContext:(NSManagedObjectContext*)context error:(NSError**)error;
 +(instancetype)entityWithDictionary:(NSDictionary*)dictionary inContext:(NSManagedObjectContext*)context error:(NSError**)error;
 -(BOOL)updateWithDictionary:(NSDictionary*)dictionary error:(NSError**)error;
 

@@ -27,7 +27,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Acheron: a4c47dcd30843f68c9e95d96e8b44ff8a3e27a0c
+  Acheron: 70a9069531858eac0831eec33c12d9bb61a73f78
   Reachability: be4883bb93f31e38266ae3365e5600a317aae735
 
 COCOAPODS: 0.32.1

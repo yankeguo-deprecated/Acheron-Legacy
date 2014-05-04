@@ -14,8 +14,8 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONValueTransformer.h"
-#import "JSONModelArray.h"
+#import "ACValueTransformer.h"
+#import "ACModelArray.h"
 
 #pragma mark - functions
 extern BOOL isNull(id value)
@@ -26,7 +26,7 @@ extern BOOL isNull(id value)
     return NO;
 }
 
-@implementation JSONValueTransformer
+@implementation ACValueTransformer
 
 -(id)init
 {
@@ -82,7 +82,7 @@ extern BOOL isNull(id value)
 #pragma mark - NSMutableArray <-> NSArray
 -(NSMutableArray*)NSMutableArrayFromNSArray:(NSArray*)array
 {
-    if ([array isKindOfClass:[JSONModelArray class]]) {
+    if ([array isKindOfClass:[ACModelArray class]]) {
         //it's a jsonmodelarray already, just return it
         return (id)array;
     }
@@ -91,12 +91,12 @@ extern BOOL isNull(id value)
 }
 
 #pragma mark - NS(Mutable)Array <- JSONModelArray
--(NSArray*)NSArrayFromJSONModelArray:(JSONModelArray*)array
+-(NSArray*)NSArrayFromJSONModelArray:(ACModelArray*)array
 {
     return (NSMutableArray*)array;
 }
 
--(NSMutableArray*)NSMutableArrayFromJSONModelArray:(JSONModelArray*)array
+-(NSMutableArray*)NSMutableArrayFromJSONModelArray:(ACModelArray*)array
 {
     return (NSMutableArray*)array;
 }

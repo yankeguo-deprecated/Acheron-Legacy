@@ -13,10 +13,5 @@
 #ifdef __OBJC__
 # import <UIKit/UIKit.h>
 # import <Foundation/Foundation.h>
-# import <AcheronLog.h>
-# import <AcheronAssert.h>
-# import <AcheronCommon.h>
-# import <AcheronNetwork.h>
-# import <AcheronModel.h>
-# import <Acheron/Assert/AcheronAssert.h>
+# import <Acheron/AcheronModel.h>
 #endif

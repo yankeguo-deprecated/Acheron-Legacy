@@ -14,9 +14,9 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONModelClassProperty.h"
+#import "ACModelClassProperty.h"
 
-@implementation JSONModelClassProperty
+@implementation ACModelClassProperty
 
 -(NSString*)description
 {

@@ -14,10 +14,10 @@
 //
 // The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
-#import "JSONModelArray.h"
-#import "JSONModel.h"
+#import "ACModelArray.h"
+#import "ACModel.h"
 
-@implementation JSONModelArray
+@implementation ACModelArray
 {
     NSMutableArray* _storage;
     Class _targetClass;
@@ -87,7 +87,7 @@
     if (self.count==0) return nil;
     if (![_storage[0] indexPropertyName]) return nil;
     
-    for (JSONModel* model in _storage) {
+    for (ACModel* model in _storage) {
         if ([[model valueForKey:model.indexPropertyName] isEqual:indexValue]) {
             return model;
         }

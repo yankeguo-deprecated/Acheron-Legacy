@@ -17,19 +17,19 @@
 #import <Foundation/Foundation.h>
 
 //JSONModel transformations
-#import "JSONValueTransformer.h"
-#import "JSONKeyMapper.h"
+#import "ACValueTransformer.h"
+#import "ACKeyMapper.h"
 
 //basic JSONModel classes
-#import "JSONModelError.h"
-#import "JSONModelClassProperty.h"
-#import "JSONModel.h"
+#import "ACModelError.h"
+#import "ACModelClassProperty.h"
+#import "ACModel.h"
 
 //models array
-#import "JSONModelArray.h"
+#import "ACModelArray.h"
 
 #ifdef COREDATA_EXTERN
  #ifndef UNIT_TESTING
-  #import "JSONModel+CoreData.h"
+  #import "ACModel+CoreData.h"
  #endif
 #endif
