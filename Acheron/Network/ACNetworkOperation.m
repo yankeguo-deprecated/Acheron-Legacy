@@ -1030,7 +1030,10 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
           
           [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
         }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         else if(result == kSecTrustResultConfirm) {
+#pragma clang diagnostic pop
           
           if(self.shouldContinueWithInvalidCertificate) {
             
