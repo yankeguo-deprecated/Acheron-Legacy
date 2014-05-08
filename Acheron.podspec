@@ -39,4 +39,8 @@ Pod::Spec.new do |s|
     sp.dependency 'Acheron/Common'
   end
 
+  s.subspec 'UI' do |sp|
+    sp.source_files = 'Acheron/UI/*.{h,m}'
+  end
+
 end
