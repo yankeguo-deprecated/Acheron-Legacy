@@ -3,6 +3,7 @@
 //  Copyright (c) 2013 Felipe Cypriano. All rights reserved.
 //
 
+#import <Acheron/AcheronLog.h>
 #import "ACAssertHandler.h"
 
 /// ---------------

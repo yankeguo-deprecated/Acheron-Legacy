@@ -1424,7 +1424,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   for(ACResponseErrorBlock errorBlock in self.errorBlocksType2)
     errorBlock(self, error);
   
-  DLog(@"State: %d", [[UIApplication sharedApplication] applicationState]);
+  DLog(@"State: %@", @([[UIApplication sharedApplication] applicationState]));
   if([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground)
     [self showLocalNotification];
 }

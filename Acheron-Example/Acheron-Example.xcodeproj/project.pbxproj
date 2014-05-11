@@ -19,6 +19,8 @@
 		696920A219168A6B00CA2AB2 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 696920A119168A6B00CA2AB2 /* FirstViewController.m */; };
 		696920A519168A6B00CA2AB2 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 696920A419168A6B00CA2AB2 /* SecondViewController.m */; };
 		696920A719168A6B00CA2AB2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 696920A619168A6B00CA2AB2 /* Images.xcassets */; };
+		69CAF65E1920183300C78C35 /* NIBBindingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */; };
+		69CAF6601920184400C78C35 /* NIBBindingScrollView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,9 @@
 		696920A419168A6B00CA2AB2 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		696920A619168A6B00CA2AB2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		696920AD19168A6B00CA2AB2 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		69CAF65C1920183300C78C35 /* NIBBindingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIBBindingScrollView.h; sourceTree = "<group>"; };
+		69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIBBindingScrollView.m; sourceTree = "<group>"; };
+		69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NIBBindingScrollView~iphone.xib"; sourceTree = "<group>"; };
 		C09E5CD56C0848CEAD8B62A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -102,6 +107,7 @@
 		6969209119168A6B00CA2AB2 /* Acheron-Example */ = {
 			isa = PBXGroup;
 			children = (
+				69CAF65B192017F200C78C35 /* UI */,
 				692AB85D1916A6D700536D1A /* Model */,
 				6969209A19168A6B00CA2AB2 /* AppDelegate.h */,
 				6969209B19168A6B00CA2AB2 /* AppDelegate.m */,
@@ -125,6 +131,16 @@
 				6969209919168A6B00CA2AB2 /* Acheron-Example-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		69CAF65B192017F200C78C35 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				69CAF65C1920183300C78C35 /* NIBBindingScrollView.h */,
+				69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */,
+				69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,6 +200,7 @@
 				696920A719168A6B00CA2AB2 /* Images.xcassets in Resources */,
 				6969209619168A6B00CA2AB2 /* InfoPlist.strings in Resources */,
 				6969209F19168A6B00CA2AB2 /* Main.storyboard in Resources */,
+				69CAF6601920184400C78C35 /* NIBBindingScrollView~iphone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,6 +249,7 @@
 				6969209C19168A6B00CA2AB2 /* AppDelegate.m in Sources */,
 				696920A219168A6B00CA2AB2 /* FirstViewController.m in Sources */,
 				6969209819168A6B00CA2AB2 /* main.m in Sources */,
+				69CAF65E1920183300C78C35 /* NIBBindingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

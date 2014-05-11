@@ -7,6 +7,7 @@
 //
 
 #import "SecondViewController.h"
+#import "NIBBindingScrollView.h"
 
 @interface SecondViewController ()
 
@@ -16,8 +17,9 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+  [super viewDidLoad];
+  
+  [self.view addSubview:[NIBBindingScrollView new]];
 }
 
 - (void)didReceiveMemoryWarning

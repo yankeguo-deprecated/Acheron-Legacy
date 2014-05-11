@@ -16,6 +16,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <Acheron/AcheronCommon.h>
+
 //JSONModel transformations
 #import "ACValueTransformer.h"
 #import "ACKeyMapper.h"
