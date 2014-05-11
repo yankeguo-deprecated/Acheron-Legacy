@@ -6,4 +6,10 @@
 //
 //
 
-#import "UINavigationItem+XIBFix.h"
+#import "UINavigationItem+NIBFix.h"
+
+#pragma mark - Quick Resource Loader
+
+#define LoadNIB(NAME)   [UINib nibWithNibName:@#NAME bundle:nil]
+#define LoadSB(NAME)    [UIStoryboard storyboardWithName:@#NAME bundle:nil]
+#define LoadImage(NAME) [UIImage imageNamed:@#NAME]

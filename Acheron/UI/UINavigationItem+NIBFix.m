@@ -6,9 +6,9 @@
 //
 //
 
-#import "UINavigationItem+XIBFix.h"
+#import "UINavigationItem+NIBFix.h"
 
-@implementation UINavigationItem (XIBFix)
+@implementation UINavigationItem (NIBFix)
 
 - (void) setRightBarButtonItemsCollection:(NSArray *)rightBarButtonItemsCollection {
   self.rightBarButtonItems = [rightBarButtonItemsCollection sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"tag" ascending:YES]]];
