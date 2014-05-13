@@ -21,6 +21,8 @@
 		696920A719168A6B00CA2AB2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 696920A619168A6B00CA2AB2 /* Images.xcassets */; };
 		69CAF65E1920183300C78C35 /* NIBBindingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */; };
 		69CAF6601920184400C78C35 /* NIBBindingScrollView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */; };
+		69EB305D1921DD8D001FBF1B /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 69EB305B1921DD8D001FBF1B /* TestViewController.m */; };
+		69EB305E1921DD8D001FBF1B /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69EB305C1921DD8D001FBF1B /* TestViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,9 @@
 		69CAF65C1920183300C78C35 /* NIBBindingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIBBindingScrollView.h; sourceTree = "<group>"; };
 		69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIBBindingScrollView.m; sourceTree = "<group>"; };
 		69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "NIBBindingScrollView~iphone.xib"; sourceTree = "<group>"; };
+		69EB305A1921DD8D001FBF1B /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		69EB305B1921DD8D001FBF1B /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		69EB305C1921DD8D001FBF1B /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		C09E5CD56C0848CEAD8B62A7 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -139,6 +144,9 @@
 				69CAF65C1920183300C78C35 /* NIBBindingScrollView.h */,
 				69CAF65D1920183300C78C35 /* NIBBindingScrollView.m */,
 				69CAF65F1920184400C78C35 /* NIBBindingScrollView~iphone.xib */,
+				69EB305A1921DD8D001FBF1B /* TestViewController.h */,
+				69EB305B1921DD8D001FBF1B /* TestViewController.m */,
+				69EB305C1921DD8D001FBF1B /* TestViewController.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -198,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				696920A719168A6B00CA2AB2 /* Images.xcassets in Resources */,
+				69EB305E1921DD8D001FBF1B /* TestViewController.xib in Resources */,
 				6969209619168A6B00CA2AB2 /* InfoPlist.strings in Resources */,
 				6969209F19168A6B00CA2AB2 /* Main.storyboard in Resources */,
 				69CAF6601920184400C78C35 /* NIBBindingScrollView~iphone.xib in Resources */,
@@ -246,6 +255,7 @@
 			files = (
 				696920A519168A6B00CA2AB2 /* SecondViewController.m in Sources */,
 				692AB8601916A6F000536D1A /* TestModel.m in Sources */,
+				69EB305D1921DD8D001FBF1B /* TestViewController.m in Sources */,
 				6969209C19168A6B00CA2AB2 /* AppDelegate.m in Sources */,
 				696920A219168A6B00CA2AB2 /* FirstViewController.m in Sources */,
 				6969209819168A6B00CA2AB2 /* main.m in Sources */,
