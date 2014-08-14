@@ -16,7 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ACModelError.h"
+#import "ACError+ACModel.h"
 #import "ACValueTransformer.h"
 #import "ACKeyMapper.h"
 
@@ -90,7 +90,7 @@
    * @param dict a dictionary holding JSON objects, to be imported in the model.
    * @param err an error or NULL
    */
-  -(instancetype)initWithDictionary:(NSDictionary*)dict error:(NSError**)err;
+  -(instancetype)initWithDictionary:(NSDictionary*)dict error:(ACError**)err;
 
 
 /**
@@ -102,7 +102,7 @@
  * @param data representing a JSON response (usually fetched from web), to be imported in the model.
  * @param err an error or NULL
  */
--(instancetype)initWithData:(NSData*)data error:(NSError**)error;
+-(instancetype)initWithData:(NSData*)data error:(ACError**)error;
 
 /**
  * All JSONModel classes should be able to export themselves as a dictionary of
@@ -148,7 +148,7 @@
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    * @see initWithString:usingEncoding:error: for use of custom text encodings
    */
-  -(instancetype)initWithString:(NSString*)string error:(ACModelError**)err;
+  -(instancetype)initWithString:(NSString*)string error:(ACError**)err;
 
   /**
    * Create a new model instance and initialize it with the JSON from a text parameter using the given encoding.
@@ -158,11 +158,11 @@
    * @exception JSONModelTypeNotAllowedException thrown when unsported type is found in the incoming JSON, 
    * or a property type in your model is not supported by JSONValueTransformer and its categories
    */
-  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(ACModelError**)err;
+  -(instancetype)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(ACError**)err;
 
-  -(instancetype)initWithDictionary:(NSDictionary*)dict error:(NSError **)err;
+  -(instancetype)initWithDictionary:(NSDictionary*)dict error:(ACError **)err;
 
-  -(instancetype)initWithData:(NSData *)data error:(NSError **)error;
+  -(instancetype)initWithData:(NSData *)data error:(ACError **)error;
 
 /** @name Exporting model contents */
 
@@ -208,9 +208,9 @@
    */
   +(NSMutableArray*)arrayOfModelsFromDictionaries:(NSArray*)array;
 
-  +(NSMutableArray*)arrayOfModelsFromDictionaries:(NSArray*)array error:(NSError**)err;
+  +(NSMutableArray*)arrayOfModelsFromDictionaries:(NSArray*)array error:(ACError**)err;
 
-  +(NSMutableArray*)arrayOfModelsFromData:(NSData*)data error:(NSError**)err;
+  +(NSMutableArray*)arrayOfModelsFromData:(NSData*)data error:(ACError**)err;
 
   /**
    * If you have an NSArray of data model objects, this method takes it in and outputs a list of the 
@@ -256,15 +256,15 @@
    * Overwrite the validate method in your own models if you need to perform some custom validation over the model data.
    * This method gets called at the very end of the JSONModel initializer, thus the model is in the state that you would
    * get it back when initialzed. Check the values of any property that needs to be validated and if any invalid values
-   * are encountered return NO and set the error parameter to an NSError object. If the model is valid return YES.
+   * are encountered return NO and set the error parameter to an ACError object. If the model is valid return YES.
    *
    * NB: Only setting the error parameter is not enough to fail the validation, you also need to return a NO value.
    *
-   * @param error a pointer to an NSError object, to pass back an error if needed
+   * @param error a pointer to an ACError object, to pass back an error if needed
    * @return a BOOL result, showing whether the model data validates or not. You can use the convenience method
-   * [JSONModelError errorModelIsInvalid] to set the NSError param if the data fails your custom validation
+   * [JSONModelError errorModelIsInvalid] to set the ACError param if the data fails your custom validation
    */
--(BOOL)validate:(NSError**)error;
+-(BOOL)validate:(ACError**)error;
 
 /** @name Key mapping */
   /**

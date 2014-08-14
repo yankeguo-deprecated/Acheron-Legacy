@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <Acheron/AcheronCommon.h>
 
+#pragma mark - Helper
+
+#define UINavigationControllerWrapped(VC) [[UINavigationController alloc] initWithRootViewController:(VC)]
+
 #pragma mark - Quick Resource Loader
 
 #define LoadNIB(NAME)   [UINib nibWithNibName:@#NAME bundle:nil]

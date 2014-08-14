@@ -475,7 +475,7 @@ static NSOperationQueue *_sharedNetworkQueue;
                       url,
                       [completedOperation isCachedResponse]);
     
-  } errorHandler:^(ACNetworkOperation *completedOperation, NSError *error) {
+  } errorHandler:^(ACNetworkOperation *completedOperation, ACError *error) {
     
     errorBlock(completedOperation, error);
   }];
@@ -507,7 +507,7 @@ static NSOperationQueue *_sharedNetworkQueue;
                                                           url,
                                                           [completedOperation isCachedResponse]);
                                       }];
-  } errorHandler:^(ACNetworkOperation *completedOperation, NSError *error) {
+  } errorHandler:^(ACNetworkOperation *completedOperation, ACError *error) {
     
     errorBlock(completedOperation, error);
     DLog(@"%@", error);
@@ -520,12 +520,12 @@ static NSOperationQueue *_sharedNetworkQueue;
 
 - (ACNetworkOperation*)imageAtURL:(NSURL *)url size:(CGSize) size onCompletion:(ACImageBlock) imageFetchedBlock {
   
-  return [self imageAtURL:url size:size completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, NSError* error){}];
+  return [self imageAtURL:url size:size completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, ACError* error){}];
 }
 
 - (ACNetworkOperation*)imageAtURL:(NSURL *)url onCompletion:(ACImageBlock) imageFetchedBlock
 {
-  return [self imageAtURL:url completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, NSError* error){}];
+  return [self imageAtURL:url completionHandler:imageFetchedBlock errorHandler:^(ACNetworkOperation* op, ACError* error){}];
 }
 
 

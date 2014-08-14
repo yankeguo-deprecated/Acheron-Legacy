@@ -23,6 +23,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+#import <Acheron/AcheronModel.h>
+
+#import "ACError+ACNetwork.h"
 #import "ACNetworkOperation.h"
 #import "ACNetworkOperation_Internal.h"
 
@@ -129,7 +132,10 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskId;
 
-@property (strong, nonatomic) NSError *error;
+@property (strong, nonatomic) ACError *error;
+
+@property (assign, nonatomic) Class responseClass;
+@property (strong, nonatomic) id responseModelObject;
 
 @end
 
@@ -528,6 +534,11 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
 - (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block
 {
   self.depencendiesFinishedBlock = [block copy];
+}
+
+- (void)registerResponseModel:(Class)responseClass
+{
+  self.responseClass = responseClass;
 }
 
 -(void) onCompletion:(ACResponseBlock) response onError:(ACErrorBlock) error {
@@ -966,7 +977,7 @@ OSStatus extractIdentityAndTrust(CFDataRef inPKCS12Data,        // 5
   for(NSOutputStream *stream in self.downloadStreams)
     [stream close];
   
-  [self operationFailedWithError:error];
+  [self operationFailedWithError:[ACError errorWithNSURLConnectionError:error]];
   [self endBackgroundTask];
 }
 
@@ -1236,8 +1247,18 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     
     self.cachedResponse = nil; // remove cached data
     [self notifyCache];
-    [self operationSucceeded];
-    
+    if (self.responseClass) {
+      id json = [self responseJSON];
+      ACError * error = nil;
+      self.responseModelObject = [[self.responseClass alloc] initWithDictionary:json error:&error];
+      if (error) {
+        [self operationFailedWithError:error];
+      } else {
+        [self operationSucceeded];
+      }
+    } else {
+      [self operationSucceeded];
+    }
   }
   if (self.response.statusCode >= 300 && self.response.statusCode < 400) {
     
@@ -1260,7 +1281,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     
   } else if (self.response.statusCode >= 400 && self.response.statusCode < 600 && ![self isCancelled]) {
     
-    [self operationFailedWithError:[NSError errorWithDomain:NSURLErrorDomain
+    [self operationFailedWithError:[ACError errorWithDomain:ACHTTPErrorDomain
                                                        code:self.response.statusCode
                                                    userInfo:self.response.allHeaderFields]];
   }
@@ -1289,6 +1310,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 -(NSString*) responseStringWithEncoding:(NSStringEncoding) encoding {
   
   return [[NSString alloc] initWithData:[self responseData] encoding:encoding];
+}
+
+-(id)responseModel
+{
+  return self.responseModelObject;
 }
 
 -(UIImage*) responseImage {
@@ -1414,7 +1440,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   }
 }
 
--(void) operationFailedWithError:(NSError*) error {
+-(void) operationFailedWithError:(ACError*) error {
   
   self.error = error;
   DLog(@"%@, [%@]", self, [self.error localizedDescription]);

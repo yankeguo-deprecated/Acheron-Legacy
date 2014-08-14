@@ -23,7 +23,7 @@
 #import "ACKeyMapper.h"
 
 //basic JSONModel classes
-#import "ACModelError.h"
+#import "ACError+ACModel.h"
 #import "ACModelClassProperty.h"
 #import "ACModel.h"
 

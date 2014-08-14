@@ -106,43 +106,43 @@ static ACKeyMapper* globalKeyMapper = nil;
     return self;
 }
 
--(instancetype)initWithData:(NSData *)data error:(NSError *__autoreleasing *)err
+-(instancetype)initWithData:(NSData *)data error:(ACError *__autoreleasing *)err
 {
     //turn nsdata to an nsstring
     NSString* string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     if (!string) return nil;
     
     //create an instance
-    ACModelError* initError = nil;
+    ACError* initError = nil;
     id objModel = [self initWithString:string usingEncoding:NSUTF8StringEncoding error:&initError];
     if (initError && err) *err = initError;
     return objModel;
 }
 
--(id)initWithString:(NSString*)string error:(ACModelError**)err
+-(id)initWithString:(NSString*)string error:(ACError**)err
 {
-    ACModelError* initError = nil;
+    ACError* initError = nil;
     id objModel = [self initWithString:string usingEncoding:NSUTF8StringEncoding error:&initError];
     if (initError && err) *err = initError;
     return objModel;
 }
 
--(id)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(ACModelError**)err
+-(id)initWithString:(NSString *)string usingEncoding:(NSStringEncoding)encoding error:(ACError**)err
 {
     //check for nil input
     if (!string) {
-        if (err) *err = [ACModelError errorInputIsNil];
+        if (err) *err = [ACError errorInputIsNil];
         return nil;
     }
     
     //read the json
-    ACModelError* initError = nil;
+    ACError* initError = nil;
     id obj = [NSJSONSerialization JSONObjectWithData:[string dataUsingEncoding:encoding]
                                              options:kNilOptions
                                                error:&initError];
 
     if (initError) {
-        if (err) *err = [ACModelError errorBadJSON];
+        if (err) *err = [ACError errorBadJSON];
         return nil;
     }
     
@@ -152,17 +152,17 @@ static ACKeyMapper* globalKeyMapper = nil;
     return objModel;
 }
 
--(id)initWithDictionary:(NSDictionary*)dict error:(NSError**)err
+-(id)initWithDictionary:(NSDictionary*)dict error:(ACError**)err
 {
     //check for nil input
     if (!dict) {
-        if (err) *err = [ACModelError errorInputIsNil];
+        if (err) *err = [ACError errorInputIsNil];
         return nil;
     }
 
     //invalid input, just create empty instance
     if (![dict isKindOfClass:[NSDictionary class]]) {
-        if (err) *err = [ACModelError errorInvalidDataWithMessage:@"Attempt to initialize JSONModel object using initWithDictionary:error: but the dictionary parameter was not an 'NSDictionary'."];
+        if (err) *err = [ACError errorInvalidDataWithMessage:@"Attempt to initialize JSONModel object using initWithDictionary:error: but the dictionary parameter was not an 'NSDictionary'."];
         return nil;
     }
 
@@ -171,7 +171,7 @@ static ACKeyMapper* globalKeyMapper = nil;
     if (!self) {
         
         //super init didn't succeed
-        if (err) *err = [ACModelError errorModelIsInvalid];
+        if (err) *err = [ACError errorModelIsInvalid];
         return nil;
     }
     
@@ -252,7 +252,7 @@ static ACKeyMapper* globalKeyMapper = nil;
         //not all required properties are in - invalid input
         DLog(@"Incoming data was invalid [%@ initWithDictionary:]. Keys missing: %@", self.class, requiredProperties);
         
-        if (err) *err = [ACModelError errorInvalidDataWithMissingKeys:requiredProperties];
+        if (err) *err = [ACError errorInvalidDataWithMissingKeys:requiredProperties];
         return NO;
     }
     
@@ -291,7 +291,7 @@ static ACKeyMapper* globalKeyMapper = nil;
             if (err) {
                 //null value for required property
                 NSString* msg = [NSString stringWithFormat:@"Value of required model key %@ is null", property.name];
-                ACModelError* dataErr = [ACModelError errorInvalidDataWithMessage:msg];
+                ACError* dataErr = [ACError errorInvalidDataWithMessage:msg];
                 *err = [dataErr errorByPrependingKeyPathComponent:property.name];
             }
             return NO;
@@ -313,7 +313,7 @@ static ACKeyMapper* globalKeyMapper = nil;
             
             if (err) {
 				NSString* msg = [NSString stringWithFormat:@"Type %@ is not allowed in JSON.", NSStringFromClass(jsonValueClass)];
-				ACModelError* dataErr = [ACModelError errorInvalidDataWithMessage:msg];
+				ACError* dataErr = [ACError errorInvalidDataWithMessage:msg];
 				*err = [dataErr errorByPrependingKeyPathComponent:property.name];
 			}
             return NO;
@@ -350,7 +350,7 @@ static ACKeyMapper* globalKeyMapper = nil;
             if ([self __isJSONModelSubClass:property.type]) {
                 
                 //initialize the property's model, store it
-                ACModelError* initErr = nil;
+                ACError* initErr = nil;
                 id value = [[property.type alloc] initWithDictionary: jsonValue error:&initErr];
                 
                 if (!value) {
@@ -380,7 +380,7 @@ static ACKeyMapper* globalKeyMapper = nil;
                     if (!jsonValue) {
                         if ((err != nil) && (*err == nil)) {
 							NSString* msg = [NSString stringWithFormat:@"Failed to transform value, but no error was set during transformation. (%@)", property];
-							ACModelError* dataErr = [ACModelError errorInvalidDataWithMessage:msg];
+							ACError* dataErr = [ACError errorInvalidDataWithMessage:msg];
 							*err = [dataErr errorByPrependingKeyPathComponent:property.name];
 						}
                         return NO;
@@ -700,7 +700,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 				if(err != nil)
 				{
 					NSString* mismatch = [NSString stringWithFormat:@"Property '%@' is declared as NSArray<%@>* but the corresponding JSON value is not a JSON Array.", property.name, property.protocol];
-					ACModelError* typeErr = [ACModelError errorInvalidDataWithTypeMismatch:mismatch];
+					ACError* typeErr = [ACError errorInvalidDataWithTypeMismatch:mismatch];
 					*err = [typeErr errorByPrependingKeyPathComponent:property.name];
 				}
 				return nil;
@@ -712,7 +712,7 @@ static ACKeyMapper* globalKeyMapper = nil;
                 
             } else {
                 //one shot conversion
-				ACModelError* arrayErr = nil;
+				ACError* arrayErr = nil;
                 value = [[protocolClass class] arrayOfModelsFromDictionaries:value error:&arrayErr];
 				if((err != nil) && (arrayErr != nil))
 				{
@@ -731,7 +731,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 				if(err != nil)
 				{
 					NSString* mismatch = [NSString stringWithFormat:@"Property '%@' is declared as NSDictionary<%@>* but the corresponding JSON value is not a JSON Object.", property.name, property.protocol];
-					ACModelError* typeErr = [ACModelError errorInvalidDataWithTypeMismatch:mismatch];
+					ACError* typeErr = [ACError errorInvalidDataWithTypeMismatch:mismatch];
 					*err = [typeErr errorByPrependingKeyPathComponent:property.name];
 				}
 				return nil;
@@ -740,7 +740,7 @@ static ACKeyMapper* globalKeyMapper = nil;
             NSMutableDictionary* res = [NSMutableDictionary dictionary];
 
             for (NSString* key in [value allKeys]) {
-				ACModelError* initErr = nil;
+				ACError* initErr = nil;
                 id obj = [[[protocolClass class] alloc] initWithDictionary:value[key] error:&initErr];
 				if (obj == nil)
 				{
@@ -1051,7 +1051,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 	return [self arrayOfModelsFromDictionaries:array error:nil];
 }
 
-+(NSMutableArray*)arrayOfModelsFromData:(NSData *)data error:(NSError *__autoreleasing *)err
++(NSMutableArray*)arrayOfModelsFromData:(NSData *)data error:(ACError *__autoreleasing *)err
 {
     id json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:err];
     if (!json || ![json isKindOfClass:[NSArray class]]) return nil;
@@ -1060,7 +1060,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 }
 
 // Same as above, but with error reporting
-+(NSMutableArray*)arrayOfModelsFromDictionaries:(NSArray*)array error:(NSError**)err
++(NSMutableArray*)arrayOfModelsFromDictionaries:(NSArray*)array error:(ACError**)err
 {
     //bail early
     if (isNull(array)) return nil;
@@ -1070,7 +1070,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 
     for (NSDictionary* d in array) {
 
-		ACModelError* initErr = nil;
+		ACError* initErr = nil;
 		id obj = [[self alloc] initWithDictionary:d error:&initErr];
 		if (obj == nil)
 		{
@@ -1079,6 +1079,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 			{
 				NSString* path = [NSString stringWithFormat:@"[%lu]", (unsigned long)list.count];
 				*err = [initErr errorByPrependingKeyPathComponent:path];
+        NSLog(@"ACModel Error: %@",*err);
 			}
 			return nil;
 		}
@@ -1175,7 +1176,7 @@ static ACKeyMapper* globalKeyMapper = nil;
 }
 
 #pragma mark - custom data validation
--(BOOL)validate:(NSError**)error
+-(BOOL)validate:(ACError**)error
 {
     return YES;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "ACLogger.h"
+#import "ACError.h"
 
 #ifdef DEBUG
 # define DLog(fmt, ...) {ACDLog((@"%s(Line:%d) " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}

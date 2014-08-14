@@ -25,6 +25,13 @@
 
 #import "ACNetworkOperation.h"
 
+#pragma mark - HTTP Methods
+
+#define kHTTP_GET     @"GET"
+#define kHTTP_POST    @"POST"
+#define kHTTP_DELETE  @"DELETE"
+#define kHTTP_PUT     @"PUT"
+
 /*!
  @header ACNetworkEngine.h
  @abstract   Represents a subclassable Network Engine for your app

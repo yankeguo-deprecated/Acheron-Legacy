@@ -55,8 +55,8 @@ typedef void (^ACIDBlock)(void);
 typedef void (^ACProgressBlock)(double progress);
 typedef void (^ACImageBlock) (UIImage* fetchedImage, NSURL* url, BOOL isInCache);
 typedef void (^ACResponseBlock)(ACNetworkOperation* completedOperation);
-typedef void (^ACResponseErrorBlock)(ACNetworkOperation* completedOperation, NSError* error);
-typedef void (^ACErrorBlock)(NSError* error);
+typedef void (^ACResponseErrorBlock)(ACNetworkOperation* completedOperation, ACError* error);
+typedef void (^ACErrorBlock)(ACError* error);
 typedef void (^ACAuthBlock)(NSURLAuthenticationChallenge* challenge);
 typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 
@@ -115,7 +115,7 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 @property (nonatomic, assign) BOOL freezable;
 
 //  This will hold the response error, by default it will be nil
-@property (nonatomic, readonly, strong) NSError *error;
+@property (nonatomic, readonly, strong) ACError *error;
 
 //  Default is NO
 @property (nonatomic, assign) BOOL shouldContinueWithInvalidCertificate;
@@ -303,6 +303,10 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
 
 - (void)onDepencendiesFinished:(ACDependenciesFinishedBlock) block;
 
+//  Register response model
+
+- (void)registerResponseModel:(Class)responseClass;
+
 /*!
  *  @abstract adds a block Handler for completion and error
  *
@@ -398,6 +402,12 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *  stringEncoding
  */
 -(NSString*)responseString;
+
+/*!
+ *  @abstract Helper method to retrive the response object as registered before
+ */
+
+-(id)responseModel;
 
 /*!
  *  @abstract Helper method to print the request as a cURL command
@@ -497,6 +507,6 @@ typedef NSString* (^ACEncodingBlock) (NSDictionary* postDataDict);
  *
  */
 
--(void) operationFailedWithError:(NSError*) error;
+-(void) operationFailedWithError:(ACError*) error;
 
 @end

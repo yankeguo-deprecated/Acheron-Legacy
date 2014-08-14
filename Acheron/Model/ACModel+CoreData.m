@@ -83,7 +83,7 @@
         if (![dictionaryKeys containsObject:key]) {
             //unmatched key
             if (error) {
-                *error = [ACModelError errorInvalidDataWithTypeMismatch:[NSString stringWithFormat: @"Key \"%@\" not found in manged object's property list", key]];
+                *error = [ACError errorInvalidDataWithTypeMismatch:[NSString stringWithFormat: @"Key \"%@\" not found in manged object's property list", key]];
             }
             return NO;
         }
